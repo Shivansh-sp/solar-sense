@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useEffect, useState } from 'react'
 import { io, Socket } from 'socket.io-client'
+import { API_BASE_URL } from '@/config/api'
 
 // Types
 interface User {
@@ -38,7 +39,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const token = localStorage.getItem('token')
     if (token) {
       // Verify token with backend
-      fetch('http://localhost:5000/api/auth/me', {
+      fetch(`${API_BASE_URL}/api/auth/me`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -64,7 +65,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const login = async (email: string, password: string) => {
     try {
-      const response = await fetch('http://localhost:5000/api/auth/login', {
+      const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -103,7 +104,7 @@ export function SocketProvider({ children }: { children: React.ReactNode }) {
   const [connected, setConnected] = useState(false)
 
   useEffect(() => {
-    const newSocket = io('http://localhost:5000', {
+    const newSocket = io(API_BASE_URL, {
       transports: ['websocket'],
       autoConnect: true,
     })
