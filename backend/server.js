@@ -61,8 +61,7 @@ const io = new Server(server, {
   }
 });
 
-// Connect to MongoDB
-connectDB();
+// Connect to MongoDB (will be awaited in initializeServices)
 
 // Security Middleware
 app.use(securityHeaders);
@@ -213,6 +212,10 @@ app.use('*', (req, res) => {
 const initializeServices = async () => {
   try {
     console.log('🚀 Initializing SolarSense services...');
+    
+    // Connect to MongoDB first
+    await connectDB();
+    console.log('✅ Database connected');
     
     await MLService.initialize();
     console.log('✅ ML Service initialized');
