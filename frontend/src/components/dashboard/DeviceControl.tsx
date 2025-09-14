@@ -22,7 +22,7 @@ interface DeviceControlProps {
   }
 }
 
-export default function DeviceControl({ data }: DeviceControlProps) {
+export default function DeviceControl({ }: DeviceControlProps) {
   const [devices, setDevices] = useState([
     {
       id: 'device-1',

@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion'
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const anime = require('animejs')
 
 interface AdvancedInteractionsProps {
@@ -117,7 +118,7 @@ export default function AdvancedInteractions({ children, className = '' }: Advan
 // Advanced particle system (ActiveTheory style)
 export const ParticleSystem = ({ count = 50 }: { count?: number }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null)
-  const particlesRef = useRef<any[]>([])
+  const particlesRef = useRef<Array<{ x: number; y: number; vx: number; vy: number; size: number; opacity: number; life: number }>>([])
   const animationRef = useRef<number | null>(null)
 
   useEffect(() => {
@@ -135,6 +136,7 @@ export const ParticleSystem = ({ count = 50 }: { count?: number }) => {
       vy: (Math.random() - 0.5) * 2,
       size: Math.random() * 3 + 1,
       opacity: Math.random() * 0.5 + 0.2,
+      life: 1.0,
     }))
 
     const animate = () => {

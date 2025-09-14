@@ -18,7 +18,7 @@ interface EnergyOverviewProps {
   }
 }
 
-export default function EnergyOverview({ data }: EnergyOverviewProps) {
+export default function EnergyOverview({ }: EnergyOverviewProps) {
   const stats = [
     {
       title: 'Total Generation',

@@ -21,7 +21,7 @@ interface HouseholdGridProps {
   }
 }
 
-export default function HouseholdGrid({ data }: HouseholdGridProps) {
+export default function HouseholdGrid({ }: HouseholdGridProps) {
   const households = [
     {
       id: 'household-1',

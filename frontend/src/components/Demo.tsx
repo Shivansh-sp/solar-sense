@@ -8,8 +8,7 @@ import {
   PauseIcon,
   ArrowRightIcon,
   SunIcon,
-  BoltIcon,
-  ChartBarIcon
+  BoltIcon
 } from '@heroicons/react/24/outline'
 
 export default function Demo() {

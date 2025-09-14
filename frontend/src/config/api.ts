@@ -88,10 +88,17 @@ export const apiRequest = async (endpoint: string, options: RequestInit = {}) =>
       'Content-Type': 'application/json',
       ...options.headers,
     },
-    timeout: API_TIMEOUT,
   }
   
-  const response = await fetch(url, { ...defaultOptions, ...options })
+  // Create a timeout promise
+  const timeoutPromise = new Promise((_, reject) =>
+    setTimeout(() => reject(new Error('Request timeout')), API_TIMEOUT)
+  )
+  
+  const response = await Promise.race([
+    fetch(url, { ...defaultOptions, ...options }),
+    timeoutPromise
+  ]) as Response
   
   if (!response.ok) {
     throw new Error(`API request failed: ${response.status} ${response.statusText}`)

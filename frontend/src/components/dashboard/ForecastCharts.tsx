@@ -15,7 +15,7 @@ interface ForecastChartsProps {
   }
 }
 
-export default function ForecastCharts({ data }: ForecastChartsProps) {
+export default function ForecastCharts({ }: ForecastChartsProps) {
   const solarForecast = [
     { hour: '00:00', generation: 0, irradiance: 0 },
     { hour: '04:00', generation: 0, irradiance: 0 },

@@ -3,13 +3,9 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { 
-  ChatBubbleLeftRightIcon, 
   XMarkIcon, 
   PaperAirplaneIcon,
-  SparklesIcon,
-  SunIcon,
-  BoltIcon,
-  ChartBarIcon
+  SparklesIcon
 } from '@heroicons/react/24/outline'
 
 interface Message {

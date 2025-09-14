@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const anime = require('animejs')
 
 interface AnimeAnimationsProps {
@@ -95,7 +96,7 @@ export default function AnimeAnimations({
 }
 
 // Advanced Anime.js animations for complex interactions
-export const createAdvancedAnimation = (element: HTMLElement, config: any) => {
+export const createAdvancedAnimation = (element: HTMLElement, config: Record<string, unknown>) => {
   return anime({
     targets: element,
     ...config,

@@ -57,8 +57,8 @@ const PaymentForm = ({
     try {
       // Create payment intent
       const { clientSecret } = await createPaymentIntent(amount, 'inr', {
-        tradeId,
-        description
+        tradeId: tradeId || '',
+        description: description || ''
       });
 
       // Confirm payment
@@ -225,7 +225,8 @@ export default function PaymentModal({
 
             <div className="p-6">
               {stripePromise ? (
-                <Elements stripe={stripePromise}>
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                <Elements stripe={stripePromise as any}>
                   <PaymentForm
                     amount={amount}
                     description={description}

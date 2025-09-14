@@ -161,7 +161,7 @@ export default function Footer() {
           
           <div className="flex items-center space-x-6">
             <div className="flex space-x-4">
-              {['Twitter', 'LinkedIn', 'GitHub', 'YouTube'].map((social, index) => (
+              {['Twitter', 'LinkedIn', 'GitHub', 'YouTube'].map((social) => (
                 <motion.a
                   key={social}
                   href="#"

@@ -19,7 +19,7 @@ interface GridStatusProps {
   }
 }
 
-export default function GridStatus({ data }: GridStatusProps) {
+export default function GridStatus({ }: GridStatusProps) {
   const gridMetrics = [
     {
       title: 'Grid Load',

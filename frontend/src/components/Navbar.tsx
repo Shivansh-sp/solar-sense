@@ -7,9 +7,7 @@ import {
   Bars3Icon, 
   XMarkIcon, 
   SunIcon, 
-  BoltIcon,
   UserIcon,
-  Cog6ToothIcon,
   ArrowRightOnRectangleIcon
 } from '@heroicons/react/24/outline'
 
@@ -33,10 +31,7 @@ export default function Navbar() {
     { name: 'About', href: '#about' },
   ]
 
-  const userMenu = [
-    { name: 'Dashboard', href: '#dashboard', icon: Cog6ToothIcon },
-    { name: 'Profile', href: '#profile', icon: UserIcon },
-  ]
+  // User menu removed as it was unused
 
   return (
     <motion.nav

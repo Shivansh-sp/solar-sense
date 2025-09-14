@@ -1,6 +1,6 @@
 'use client'
 
-import { createContext, useContext, useState, useEffect } from 'react'
+import { createContext, useContext, useState, useEffect, useMemo } from 'react'
 import { BrowserRouter, Routes, Route, Link, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { 
@@ -28,21 +28,21 @@ export const Navigation = () => {
   const location = useLocation()
   const [activeTab, setActiveTab] = useState('overview')
 
-  const tabs = [
+  const tabs = useMemo(() => [
     { id: 'overview', name: 'Overview', icon: ChartBarIcon, path: '/' },
     { id: 'market', name: 'Trading', icon: BoltIcon, path: '/market' },
     { id: 'households', name: 'Households', icon: HomeIcon, path: '/households' },
     { id: 'devices', name: 'Devices', icon: CogIcon, path: '/devices' },
     { id: 'forecast', name: 'Forecast', icon: SunIcon, path: '/forecast' },
     { id: 'analytics', name: 'Analytics', icon: ChartPieIcon, path: '/analytics' }
-  ]
+  ], [])
 
   useEffect(() => {
     const currentTab = tabs.find(tab => tab.path === location.pathname)
     if (currentTab) {
       setActiveTab(currentTab.id)
     }
-  }, [location.pathname])
+  }, [location.pathname, tabs])
 
   return (
     <nav className="bg-white shadow-lg border-b border-gray-200">

@@ -1,12 +1,11 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { 
   BoltIcon, 
   CurrencyDollarIcon, 
   ArrowTrendingUpIcon,
-  ArrowTrendingDownIcon,
   ClockIcon,
   UserGroupIcon,
   CreditCardIcon,
@@ -24,6 +23,7 @@ interface Trade {
   status: 'available' | 'pending' | 'completed' | 'cancelled';
   timestamp: string;
   description: string;
+  type: 'buy' | 'sell';
 }
 
 interface TradingStats {
@@ -37,7 +37,7 @@ interface TradingStats {
 
 export default function TradingDashboard() {
   const [trades, setTrades] = useState<Trade[]>([]);
-  const [stats, setStats] = useState<TradingStats>({
+  const [stats] = useState<TradingStats>({
     currentPrice: 6.5,
     priceChange: 2.3,
     totalVolume: 1250.5,
@@ -47,7 +47,7 @@ export default function TradingDashboard() {
   });
   const [selectedTrade, setSelectedTrade] = useState<Trade | null>(null);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
-  const [filter, setFilter] = useState<'all' | 'available' | 'my-trades'>('all');
+  const [filter, setFilter] = useState<'all' | 'buy' | 'sell' | 'my-trades'>('all');
 
   // Mock data - in real app, this would come from API
   useEffect(() => {
@@ -60,7 +60,8 @@ export default function TradingDashboard() {
         total: 33.8,
         status: 'available',
         timestamp: '2 min ago',
-        description: 'Clean solar energy from rooftop panels'
+        description: 'Clean solar energy from rooftop panels',
+        type: 'sell'
       },
       {
         id: '2',
@@ -70,7 +71,8 @@ export default function TradingDashboard() {
         total: 23.56,
         status: 'available',
         timestamp: '5 min ago',
-        description: 'Excess energy from community solar farm'
+        description: 'Excess energy from community solar farm',
+        type: 'sell'
       },
       {
         id: '3',
@@ -80,7 +82,8 @@ export default function TradingDashboard() {
         total: 48.28,
         status: 'available',
         timestamp: '8 min ago',
-        description: 'High-efficiency solar panels with battery backup'
+        description: 'High-efficiency solar panels with battery backup',
+        type: 'sell'
       },
       {
         id: '4',
@@ -90,14 +93,16 @@ export default function TradingDashboard() {
         total: 28.35,
         status: 'completed',
         timestamp: '1 hour ago',
-        description: 'Your solar energy sold to neighbor'
+        description: 'Your solar energy sold to neighbor',
+        type: 'sell'
       }
     ];
     setTrades(mockTrades);
   }, []);
 
   const filteredTrades = trades.filter(trade => {
-    if (filter === 'available') return trade.status === 'available';
+    if (filter === 'buy') return trade.type === 'buy';
+    if (filter === 'sell') return trade.type === 'sell';
     if (filter === 'my-trades') return trade.seller === 'You';
     return true;
   });
@@ -107,7 +112,7 @@ export default function TradingDashboard() {
     setShowPaymentModal(true);
   };
 
-  const handlePaymentSuccess = (paymentIntent: any) => {
+  const handlePaymentSuccess = (paymentIntent: { id: string; status: string }) => {
     console.log('Payment successful:', paymentIntent);
     // Update trade status, show success message, etc.
     setShowPaymentModal(false);
@@ -197,12 +202,13 @@ export default function TradingDashboard() {
         <div className="flex space-x-4 mb-6">
           {[
             { key: 'all', label: 'All Trades' },
-            { key: 'available', label: 'Available' },
+            { key: 'buy', label: 'Buy Orders' },
+            { key: 'sell', label: 'Sell Orders' },
             { key: 'my-trades', label: 'My Trades' }
           ].map((filterOption) => (
             <button
               key={filterOption.key}
-              onClick={() => setFilter(filterOption.key as any)}
+              onClick={() => setFilter(filterOption.key as 'all' | 'buy' | 'sell' | 'my-trades')}
               className={`px-4 py-2 rounded-lg transition-colors ${
                 filter === filterOption.key
                   ? 'bg-blue-500 text-white'

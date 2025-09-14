@@ -9,7 +9,7 @@ import HouseholdGrid from './dashboard/HouseholdGrid'
 import DeviceControl from './dashboard/DeviceControl'
 import ForecastCharts from './dashboard/ForecastCharts'
 import GridStatus from './dashboard/GridStatus'
-import { DashboardData, Tab } from '@/types/dashboard'
+import { Tab } from '@/types/dashboard'
 import { 
   ChartBarIcon, 
   HomeIcon, 
@@ -22,7 +22,7 @@ import {
 export default function Dashboard() {
   const { user } = useAuth()
   const [activeTab, setActiveTab] = useState<string>('overview')
-  const [dashboardData, setDashboardData] = useState<DashboardData | null>(null)
+  // Removed dashboardData as components now use their own data
   const [loading, setLoading] = useState<boolean>(true)
 
   useEffect(() => {
@@ -35,41 +35,7 @@ export default function Dashboard() {
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1000))
       
-      // Mock data for demonstration
-      const mockData: DashboardData = {
-        gridStatus: {
-          totalLoad: 45.2,
-          totalSupply: 52.8,
-          stability: 'stable',
-          efficiency: 0.86
-        },
-        households: [
-          {
-            id: 'household-1',
-            name: 'Green Valley Home',
-            generation: 8.5,
-            consumption: 6.2,
-            storage: 12.0,
-            status: 'online'
-          },
-          {
-            id: 'household-2',
-            name: 'Sunshine Residence',
-            generation: 12.0,
-            consumption: 7.8,
-            storage: 16.0,
-            status: 'online'
-          }
-        ],
-        trading: {
-          activeTrades: 5,
-          totalVolume: 24.3,
-          averagePrice: 6.5,
-          revenue: 3.65
-        }
-      }
-      
-      setDashboardData(mockData)
+      // Mock data removed as components now use their own data
     } catch (error) {
       console.error('Error fetching dashboard data:', error)
     } finally {
@@ -139,12 +105,12 @@ export default function Dashboard() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3 }}
         >
-          {activeTab === 'overview' && dashboardData && <EnergyOverview data={dashboardData} />}
-          {activeTab === 'market' && dashboardData && <MarketDashboard data={dashboardData} />}
-          {activeTab === 'households' && dashboardData && <HouseholdGrid data={dashboardData} />}
-          {activeTab === 'devices' && dashboardData && <DeviceControl data={dashboardData} />}
-          {activeTab === 'forecast' && dashboardData && <ForecastCharts data={dashboardData} />}
-          {activeTab === 'analytics' && dashboardData && <GridStatus data={dashboardData} />}
+          {activeTab === 'overview' && <EnergyOverview />}
+          {activeTab === 'market' && <MarketDashboard />}
+          {activeTab === 'households' && <HouseholdGrid />}
+          {activeTab === 'devices' && <DeviceControl />}
+          {activeTab === 'forecast' && <ForecastCharts />}
+          {activeTab === 'analytics' && <GridStatus />}
         </motion.div>
       </div>
     </div>

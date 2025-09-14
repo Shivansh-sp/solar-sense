@@ -17,7 +17,7 @@ interface MarketDashboardProps {
   }
 }
 
-export default function MarketDashboard({ data }: MarketDashboardProps) {
+export default function MarketDashboard({ }: MarketDashboardProps) {
   // Removed unused state variables
 
   const marketStats = [
