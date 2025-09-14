@@ -8,10 +8,15 @@ import ErrorBoundary from '@/components/ErrorBoundary'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'SolarSense: Intelligent Energy Solutions',
+  title: 'CODE TYRANS - SolarSense: Intelligent Energy Solutions',
   description: 'Decentralized peer-to-peer energy trading platform with machine learning forecasting and smart grid management',
-  keywords: ['solar', 'energy', 'trading', 'smart grid', 'renewable energy', 'sustainability'],
-  authors: [{ name: 'SolarSense Team' }],
+  keywords: ['solar', 'energy', 'trading', 'smart grid', 'renewable energy', 'sustainability', 'CODE TYRANS'],
+  authors: [{ name: 'CODE TYRANS Team' }],
+  icons: {
+    icon: '/favicon.svg',
+    shortcut: '/favicon.svg',
+    apple: '/favicon.svg',
+  },
 }
 
 export const viewport = {

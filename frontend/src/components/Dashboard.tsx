@@ -64,7 +64,7 @@ export default function Dashboard() {
         trading: {
           activeTrades: 5,
           totalVolume: 24.3,
-          averagePrice: 0.15,
+          averagePrice: 6.5,
           revenue: 3.65
         }
       }
