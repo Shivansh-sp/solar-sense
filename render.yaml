@@ -4,7 +4,8 @@ services:
     name: solarsense-backend
     env: node
     plan: free
-    buildCommand: npm run install:all
+    rootDir: backend
+    buildCommand: npm install
     startCommand: npm start
     envVars:
       - key: NODE_ENV
