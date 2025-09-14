@@ -20,7 +20,7 @@
 ```
 NODE_ENV=production
 PORT=5000
-MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/solarsense
+MONGODB_URI=mongodb+srv://YOUR_USERNAME:YOUR_PASSWORD@cluster.mongodb.net/solarsense
 JWT_SECRET=your-secure-jwt-secret
 CORS_ORIGIN=https://your-frontend-domain.vercel.app
 ```
@@ -99,7 +99,7 @@ After both are deployed:
 ```
 NODE_ENV=production
 PORT=5000
-MONGODB_URI=mongodb+srv://user:pass@cluster.mongodb.net/solarsense
+MONGODB_URI=mongodb+srv://YOUR_USERNAME:YOUR_PASSWORD@cluster.mongodb.net/solarsense
 JWT_SECRET=your-secure-jwt-secret-here
 JWT_EXPIRE=7d
 CORS_ORIGIN=https://your-frontend.vercel.app

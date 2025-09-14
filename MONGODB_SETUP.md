@@ -31,8 +31,10 @@
 Replace the connection string in your deployment platform:
 
 ```
-MONGODB_URI=mongodb+srv://solarsense-user:YOUR_PASSWORD@cluster0.xxxxx.mongodb.net/solarsense?retryWrites=true&w=majority
+MONGODB_URI=mongodb+srv://YOUR_USERNAME:YOUR_PASSWORD@cluster0.xxxxx.mongodb.net/solarsense?retryWrites=true&w=majority
 ```
+
+**⚠️ SECURITY WARNING**: Never commit real credentials to your repository. Use environment variables or secure secret management.
 
 ## Step 4: Test Connection
 

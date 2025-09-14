@@ -218,6 +218,11 @@ coverage/
 .env.test.local
 .env.production.local
 
+# Secure credentials (NEVER commit these)
+backend/.env.local
+frontend/.env.local
+SECURE_CREDENTIALS.md
+
 # Vercel
 .vercel
 
