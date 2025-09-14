@@ -9,7 +9,10 @@ import {
 } from '@heroicons/react/24/outline'
 
 interface ForecastChartsProps {
-  data: any
+  data?: {
+    solarForecast?: Array<{ hour: string; generation: number; irradiance: number }>;
+    loadForecast?: Array<{ hour: string; load: number }>;
+  }
 }
 
 export default function ForecastCharts({ data }: ForecastChartsProps) {
@@ -33,15 +36,7 @@ export default function ForecastCharts({ data }: ForecastChartsProps) {
     { hour: '24:00', load: 3.2 }
   ]
 
-  const weatherData = [
-    { hour: '00:00', temp: 18, cloud: 20, humidity: 65 },
-    { hour: '04:00', temp: 16, cloud: 30, humidity: 70 },
-    { hour: '08:00', temp: 20, cloud: 40, humidity: 60 },
-    { hour: '12:00', temp: 28, cloud: 10, humidity: 45 },
-    { hour: '16:00', temp: 30, cloud: 15, humidity: 40 },
-    { hour: '20:00', temp: 25, cloud: 25, humidity: 55 },
-    { hour: '24:00', temp: 22, cloud: 35, humidity: 60 }
-  ]
+  // Weather data removed as it was unused
 
   return (
     <div className="space-y-8">

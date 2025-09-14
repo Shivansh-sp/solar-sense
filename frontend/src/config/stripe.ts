@@ -36,7 +36,7 @@ export const STRIPE_CONFIG = {
 export const stripePromise = loadStripe(STRIPE_CONFIG.publishableKey);
 
 // Payment intent creation
-export const createPaymentIntent = async (amount: number, currency: string = 'inr', metadata: any = {}) => {
+export const createPaymentIntent = async (amount: number, currency: string = 'inr', metadata: Record<string, string> = {}) => {
   try {
     const response = await fetch('/api/payments/create-payment-intent', {
       method: 'POST',
@@ -153,7 +153,7 @@ export const formatAmountForStripe = (amount: number): number => {
   return Math.round(amount * 100);
 };
 
-export default {
+const stripeConfig = {
   STRIPE_CONFIG,
   stripePromise,
   createPaymentIntent,
@@ -163,3 +163,5 @@ export default {
   formatAmount,
   formatAmountForStripe
 };
+
+export default stripeConfig

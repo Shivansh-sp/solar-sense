@@ -11,7 +11,12 @@ import {
 } from '@heroicons/react/24/outline'
 
 interface GridStatusProps {
-  data: any
+  data?: {
+    load?: number;
+    frequency?: number;
+    voltage?: number;
+    stability?: string;
+  }
 }
 
 export default function GridStatus({ data }: GridStatusProps) {

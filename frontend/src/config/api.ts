@@ -100,10 +100,12 @@ export const apiRequest = async (endpoint: string, options: RequestInit = {}) =>
   return response.json()
 }
 
-export default {
+const apiConfig = {
   API_BASE_URL,
   API_TIMEOUT,
   API_ENDPOINTS,
   buildApiUrl,
   apiRequest,
 }
+
+export default apiConfig

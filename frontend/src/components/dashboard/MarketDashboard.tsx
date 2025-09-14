@@ -7,16 +7,19 @@ import {
   ArrowUpIcon,
   ArrowDownIcon,
   ChartBarIcon,
-  ClockIcon,
-  CheckCircleIcon
+  ClockIcon
 } from '@heroicons/react/24/outline'
 
 interface MarketDashboardProps {
-  data: any
+  data?: {
+    currentPrice?: number;
+    volume?: number;
+    trades?: number;
+  }
 }
 
 export default function MarketDashboard({ data }: MarketDashboardProps) {
-  const [activeTab, setActiveTab] = useState('overview')
+  // Removed unused state variables
 
   const marketStats = [
     {

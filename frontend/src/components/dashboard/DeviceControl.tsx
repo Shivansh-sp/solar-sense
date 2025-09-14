@@ -12,7 +12,14 @@ import {
 } from '@heroicons/react/24/outline'
 
 interface DeviceControlProps {
-  data: any
+  data?: {
+    devices?: Array<{
+      id: string;
+      name: string;
+      type: string;
+      status: string;
+    }>;
+  }
 }
 
 export default function DeviceControl({ data }: DeviceControlProps) {

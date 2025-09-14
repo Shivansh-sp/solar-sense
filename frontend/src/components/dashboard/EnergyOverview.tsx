@@ -11,7 +11,11 @@ import {
 } from '@heroicons/react/24/outline'
 
 interface EnergyOverviewProps {
-  data: any
+  data?: {
+    generation?: number;
+    consumption?: number;
+    storage?: number;
+  }
 }
 
 export default function EnergyOverview({ data }: EnergyOverviewProps) {
