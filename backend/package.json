@@ -7,7 +7,10 @@
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
     "test": "jest",
-    "build": "echo 'No build step required for Node.js'"
+    "build": "echo 'No build step required for Node.js'",
+    "setup:dev": "node ../setup-env.js dev",
+    "setup:prod": "node ../setup-env.js prod",
+    "setup:render": "node ../setup-env.js render"
   },
   "keywords": [
     "solar",
