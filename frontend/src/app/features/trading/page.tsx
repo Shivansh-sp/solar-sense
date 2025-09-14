@@ -5,44 +5,13 @@ import { motion } from 'framer-motion';
 import { 
   BoltIcon, 
   CurrencyDollarIcon, 
-  ArrowTrendingUpIcon,
   ArrowLeftIcon,
-  CheckCircleIcon,
-  ClockIcon,
   UserGroupIcon
 } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import TradingDashboard from '@/components/TradingDashboard';
 
-const features = [
-  {
-    icon: BoltIcon,
-    title: 'Peer-to-Peer Trading',
-    description: 'Trade energy directly with neighbors in your community',
-    color: 'from-blue-500 to-purple-600'
-  },
-  {
-    icon: CurrencyDollarIcon,
-    title: 'Dynamic Pricing',
-    description: 'Real-time market pricing based on supply and demand',
-    color: 'from-green-400 to-emerald-500'
-  },
-  {
-    icon: UserGroupIcon,
-    title: 'Community Marketplace',
-    description: 'Connect with local energy producers and consumers',
-    color: 'from-pink-500 to-rose-500'
-  }
-];
-
-const benefits = [
-  'Decentralized energy trading',
-  'Real-time market pricing',
-  'Blockchain security',
-  'Community-driven marketplace',
-  'Automated smart contracts',
-  'Transparent transactions'
-];
+// Trading features and benefits are now handled by TradingDashboard component
 
 export default function TradingPage() {
   return (

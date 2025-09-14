@@ -18,7 +18,7 @@ interface PaymentModalProps {
   amount: number;
   description: string;
   tradeId?: string;
-  onSuccess?: (paymentIntent: any) => void;
+  onSuccess?: (paymentIntent: { id: string; status: string }) => void;
   onError?: (error: string) => void;
 }
 
@@ -33,7 +33,7 @@ const PaymentForm = ({
   amount: number;
   description: string;
   tradeId?: string;
-  onSuccess?: (paymentIntent: any) => void;
+  onSuccess?: (paymentIntent: { id: string; status: string }) => void;
   onError?: (error: string) => void;
   onClose: () => void;
 }) => {
@@ -184,7 +184,7 @@ export default function PaymentModal({
   onSuccess,
   onError
 }: PaymentModalProps) {
-  const [stripePromise, setStripePromise] = useState<any>(null);
+  const [stripePromise, setStripePromise] = useState<Promise<any> | null>(null);
 
   useEffect(() => {
     if (isOpen) {
