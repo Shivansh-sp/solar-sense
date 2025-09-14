@@ -12,9 +12,7 @@ services:
       - key: PORT
         value: 5000
       - key: MONGODB_URI
-        fromDatabase:
-          name: solarsense-db
-          property: connectionString
+        value: mongodb+srv://shivanshpushkarna_db_user:CFM6tSoP5vd1mhBE@cluster0.x6fhvdz.mongodb.net/solarsense?retryWrites=true&w=majority&appName=Cluster0
       - key: JWT_SECRET
         generateValue: true
       - key: JWT_EXPIRE
@@ -30,7 +28,4 @@ services:
       - key: LOG_LEVEL
         value: info
 
-databases:
-  - name: solarsense-db
-    plan: free
-    databaseName: solarsense
+# Using MongoDB Atlas - no local database needed
