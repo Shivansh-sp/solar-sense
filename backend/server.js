@@ -214,8 +214,14 @@ const initializeServices = async () => {
     console.log('🚀 Initializing SolarSense services...');
     
     // Connect to MongoDB first
-    await connectDB();
-    console.log('✅ Database connected');
+    try {
+      await connectDB();
+      console.log('✅ Database connected');
+      global.databaseAvailable = true;
+    } catch (error) {
+      console.log('⚠️ Database connection failed, continuing without database...');
+      global.databaseAvailable = false;
+    }
     
     await MLService.initialize();
     console.log('✅ ML Service initialized');
@@ -229,9 +235,17 @@ const initializeServices = async () => {
     await SimulationService.initialize();
     console.log('✅ Simulation Service initialized');
     
-    // Initialize database with sample data
-    await initializeDatabase();
-    console.log('✅ Database initialized with sample data');
+    // Initialize database with sample data (only if database is available)
+    if (global.databaseAvailable) {
+      try {
+        await initializeDatabase();
+        console.log('✅ Database initialized with sample data');
+      } catch (error) {
+        console.log('⚠️ Database initialization failed, continuing without sample data...');
+      }
+    } else {
+      console.log('⚠️ Skipping database initialization - database not available');
+    }
     
     console.log('🎉 All services initialized successfully');
   } catch (error) {

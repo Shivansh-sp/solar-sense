@@ -7,14 +7,38 @@ const initializeDatabase = async () => {
   try {
     console.log('🗄️ Initializing database with sample data...');
 
-    // Clear existing data
-    await User.deleteMany({});
-    await Household.deleteMany({});
-    await Trade.deleteMany({});
-    await EnergyData.deleteMany({});
+    // Check if database is connected before proceeding
+    const mongoose = require('mongoose');
+    if (mongoose.connection.readyState !== 1) {
+      console.log('⚠️ Database not connected, skipping initialization...');
+      return;
+    }
 
-    // Create sample users
-    const users = await User.create([
+    // Clear existing data with timeout protection
+    try {
+      await Promise.race([
+        User.deleteMany({}),
+        new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout')), 5000))
+      ]);
+      await Promise.race([
+        Household.deleteMany({}),
+        new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout')), 5000))
+      ]);
+      await Promise.race([
+        Trade.deleteMany({}),
+        new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout')), 5000))
+      ]);
+      await Promise.race([
+        EnergyData.deleteMany({}),
+        new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout')), 5000))
+      ]);
+    } catch (error) {
+      console.log('⚠️ Could not clear existing data, continuing with initialization...');
+    }
+
+    // Create sample users with timeout protection
+    const users = await Promise.race([
+      User.create([
       {
         email: 'admin@solarsense.com',
         password: 'password123',
@@ -48,6 +72,8 @@ const initializeDatabase = async () => {
         role: 'resident',
         householdId: 'household-3'
       }
+    ]),
+      new Promise((_, reject) => setTimeout(() => reject(new Error('User creation timeout')), 10000))
     ]);
 
     console.log(`✅ Created ${users.length} users`);

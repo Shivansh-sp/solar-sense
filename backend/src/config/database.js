@@ -39,6 +39,10 @@ const connectDB = async () => {
     // Don't exit immediately, let the app try to continue
     // The app can still serve some functionality without DB
     console.log('⚠️ Continuing without database connection...');
+    console.log('⚠️ Some features may not work properly without database access');
+    
+    // Set a flag to indicate database is not available
+    global.databaseAvailable = false;
   }
 };
 
