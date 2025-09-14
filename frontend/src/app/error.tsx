@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react'
 import { motion } from 'framer-motion'
+import Link from 'next/link'
 import { ExclamationTriangleIcon, ArrowPathIcon, HomeIcon } from '@heroicons/react/24/outline'
 
 export default function Error({
@@ -31,7 +32,7 @@ export default function Error({
         </h1>
         
         <p className="text-gray-600 mb-6">
-          We're sorry, but something unexpected happened. Please try again or go back to the home page.
+          We&apos;re sorry, but something unexpected happened. Please try again or go back to the home page.
         </p>
         
         {process.env.NODE_ENV === 'development' && (
@@ -56,13 +57,13 @@ export default function Error({
             <span>Try Again</span>
           </button>
           
-          <a
+          <Link
             href="/"
             className="flex-1 bg-gray-500 hover:bg-gray-600 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center space-x-2"
           >
             <HomeIcon className="w-5 h-5" />
             <span>Go Home</span>
-          </a>
+          </Link>
         </div>
       </motion.div>
     </div>

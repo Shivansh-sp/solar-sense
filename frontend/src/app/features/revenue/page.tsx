@@ -7,8 +7,7 @@ import {
   ArrowTrendingUpIcon, 
   ChartBarIcon,
   ArrowLeftIcon,
-  CheckCircleIcon,
-  BanknotesIcon
+  CheckCircleIcon
 } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 
@@ -147,7 +146,7 @@ export default function RevenuePage() {
                 
                 <div className="space-y-3">
                   <div className="flex justify-between text-sm">
-                    <span className="text-gray-300">Today's Earnings</span>
+                    <span className="text-gray-300">Today&apos;s Earnings</span>
                     <span className="text-green-400 font-semibold">$127.50</span>
                   </div>
                   <div className="w-full bg-gray-700 rounded-full h-2">
