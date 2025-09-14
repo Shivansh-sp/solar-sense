@@ -6,6 +6,9 @@ const nextConfig: NextConfig = {
     optimizePackageImports: ['@heroicons/react', 'framer-motion'],
   },
   
+  // Fix workspace root warning
+  outputFileTracingRoot: process.cwd(),
+  
   // Turbopack configuration (moved from experimental.turbo)
   turbopack: {
     rules: {

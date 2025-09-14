@@ -1,0 +1,28 @@
+# Render deployment configuration for SolarSense Frontend
+services:
+  - type: web
+    name: solarsense-frontend
+    env: node
+    plan: free
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3000
+      - key: NEXT_PUBLIC_API_URL
+        value: https://solar-sense-backend.onrender.com/api
+      - key: NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+        value: pk_test_51Q8x9y2z3a4b5c6d7e8f9g0h1i2j3k4l5m6n7o8p9q0r1s2t3u4v5w6x7y8z9
+      - key: NEXT_PUBLIC_APP_URL
+        value: https://solar-sense-frontend.onrender.com
+      - key: NEXT_PUBLIC_WEATHER_API_KEY
+        value: demo-weather-api-key
+      - key: NEXT_PUBLIC_MQTT_BROKER_URL
+        value: mqtt://localhost:1883
+      - key: NEXT_PUBLIC_MQTT_TOPIC_PREFIX
+        value: solarsense
+
+# Frontend deployment configuration

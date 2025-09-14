@@ -11,7 +11,8 @@
     "type-check": "tsc --noEmit",
     "build:analyze": "ANALYZE=true npm run build",
     "clean": "rm -rf .next out",
-    "preview": "next build && next start"
+    "preview": "next build && next start",
+    "build:cache": "next build --experimental-build-cache"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.8",
