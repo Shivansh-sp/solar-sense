@@ -4,9 +4,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { 
   BoltIcon, 
-  CurrencyDollarIcon, 
-  ArrowLeftIcon,
-  UserGroupIcon
+  ArrowLeftIcon
 } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import TradingDashboard from '@/components/TradingDashboard';

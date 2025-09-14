@@ -184,7 +184,7 @@ export default function PaymentModal({
   onSuccess,
   onError
 }: PaymentModalProps) {
-  const [stripePromise, setStripePromise] = useState<Promise<any> | null>(null);
+  const [stripePromise, setStripePromise] = useState<Promise<unknown> | null>(null);
 
   useEffect(() => {
     if (isOpen) {

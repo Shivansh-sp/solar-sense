@@ -2,7 +2,6 @@
 
 import { motion } from 'framer-motion'
 import { 
-  HomeIcon,
   SunIcon,
   BoltIcon,
   Battery0Icon,
@@ -11,7 +10,15 @@ import {
 } from '@heroicons/react/24/outline'
 
 interface HouseholdGridProps {
-  data: any
+  data?: {
+    households?: Array<{
+      id: string;
+      name: string;
+      status: string;
+      generation: number;
+      consumption: number;
+    }>;
+  }
 }
 
 export default function HouseholdGrid({ data }: HouseholdGridProps) {
