@@ -13,7 +13,7 @@ services:
       - key: PORT
         value: 5000
       - key: MONGODB_URI
-        value: ${MONGODB_URI}
+        value: mongodb+srv://shivanshpushkarna_db_user:CFM6tSoP5vd1mhBE@cluster0.x6fhvdz.mongodb.net/solarsense?retryWrites=true&w=majority&appName=Cluster0
       - key: JWT_SECRET
         generateValue: true
       - key: JWT_EXPIRE
@@ -28,11 +28,19 @@ services:
         value: 12
       - key: LOG_LEVEL
         value: info
+      - key: API_VERSION
+        value: v1
+      - key: WEATHER_API_KEY
+        value: demo-weather-api-key
+      - key: MQTT_BROKER_URL
+        value: mqtt://localhost:1883
+      - key: MQTT_TOPIC_PREFIX
+        value: solarsense
       - key: STRIPE_SECRET_KEY
-        value: ${STRIPE_SECRET_KEY}
+        value: sk_test_51Q8x9y2z3a4b5c6d7e8f9g0h1i2j3k4l5m6n7o8p9q0r1s2t3u4v5w6x7y8z9
       - key: STRIPE_PUBLISHABLE_KEY
-        value: ${STRIPE_PUBLISHABLE_KEY}
+        value: pk_test_51Q8x9y2z3a4b5c6d7e8f9g0h1i2j3k4l5m6n7o8p9q0r1s2t3u4v5w6x7y8z9
       - key: STRIPE_WEBHOOK_SECRET
-        value: ${STRIPE_WEBHOOK_SECRET}
+        value: whsec_1234567890abcdef1234567890abcdef12345678
 
 # Using MongoDB Atlas - no local database needed
