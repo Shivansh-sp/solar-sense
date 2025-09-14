@@ -21,6 +21,8 @@ export const env = {
   // External Services
   WEATHER_API_KEY: process.env.NEXT_PUBLIC_WEATHER_API_KEY || '',
   MAPS_API_KEY: process.env.NEXT_PUBLIC_MAPS_API_KEY || '',
+  GEMINI_API_KEY: process.env.NEXT_PUBLIC_GEMINI_API_KEY || '',
+  STRIPE_PUBLISHABLE_KEY: process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || 'pk_test_51Q8x9y2z3a4b5c6d7e8f9g0h1i2j3k4l5m6n7o8p9q0r1s2t3u4v5w6x7y8z9',
 }
 
 export default env

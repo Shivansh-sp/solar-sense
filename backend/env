@@ -1,28 +1,27 @@
-# Database Configuration
+
 MONGODB_URI=mongodb+srv://shivanshpushkarna_db_user:CFM6tSoP5vd1mhBE@cluster0.x6fhvdz.mongodb.net/solarsense?retryWrites=true&w=majority&appName=Cluster0
 REDIS_URL=redis://localhost:6379
 
-# Server Configuration
 PORT=5000
 NODE_ENV=development
 
-# JWT Configuration
-JWT_SECRET=solarsense-super-secret-jwt-key-2024
+JWT_SECRET=solarsense_2024_secure_jwt_secret_key_8f7e6d5c4b3a2918
 JWT_EXPIRE=7d
 
-# API Configuration
+
 API_VERSION=v1
 CORS_ORIGIN=http://localhost:3000
 
-# ML Configuration
 ML_MODEL_PATH=./models
 WEATHER_API_KEY=demo-weather-api-key
 
-# MQTT Configuration
+
 MQTT_BROKER_URL=mqtt://localhost:1883
 MQTT_TOPIC_PREFIX=solarsense
 
-# Security
 BCRYPT_ROUNDS=12
 RATE_LIMIT_WINDOW_MS=900000
 RATE_LIMIT_MAX_REQUESTS=100
+STRIPE_SECRET_KEY=sk_test_51Q8x9y2z3a4b5c6d7e8f9g0h1i2j3k4l5m6n7o8p9q0r1s2t3u4v5w6x7y8z9
+STRIPE_PUBLISHABLE_KEY=pk_test_51Q8x9y2z3a4b5c6d7e8f9g0h1i2j3k4l5m6n7o8p9q0r1s2t3u4v5w6x7y8z9
+STRIPE_WEBHOOK_SECRET=whsec_1234567890abcdef1234567890abcdef12345678

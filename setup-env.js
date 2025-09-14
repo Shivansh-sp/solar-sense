@@ -11,7 +11,7 @@ const path = require('path');
 // Environment configurations
 const environments = {
   development: {
-    MONGODB_URI: 'mongodb+srv://shivanshpushkarna_db_user:CFM6tSoP5vd1mhBE@cluster0.x6fhvdz.mongodb.net/solarsense?retryWrites=true&w=majority&appName=Cluster0',
+    MONGODB_URI: 'mongodb+srv://YOUR_USERNAME:YOUR_PASSWORD@cluster0.xxxxx.mongodb.net/solarsense?retryWrites=true&w=majority&appName=Cluster0',
     NODE_ENV: 'development',
     PORT: '5000',
     JWT_SECRET: 'solarsense-super-secret-jwt-key-2024',
@@ -23,7 +23,7 @@ const environments = {
     LOG_LEVEL: 'info'
   },
   production: {
-    MONGODB_URI: 'mongodb+srv://shivanshpushkarna_db_user:CFM6tSoP5vd1mhBE@cluster0.x6fhvdz.mongodb.net/solarsense?retryWrites=true&w=majority&appName=Cluster0',
+    MONGODB_URI: 'mongodb+srv://YOUR_USERNAME:YOUR_PASSWORD@cluster0.xxxxx.mongodb.net/solarsense?retryWrites=true&w=majority&appName=Cluster0',
     NODE_ENV: 'production',
     PORT: '5000',
     JWT_SECRET: 'your-super-secure-production-jwt-secret-here',
