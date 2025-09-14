@@ -1,8 +1,8 @@
 // Environment configuration
 export const env = {
   // API Configuration
-  API_URL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api',
-  WS_URL: process.env.NEXT_PUBLIC_WS_URL || 'ws://localhost:5000',
+  API_URL: process.env.NEXT_PUBLIC_API_URL || 'https://solar-sense-backend.onrender.com/api',
+  WS_URL: process.env.NEXT_PUBLIC_WS_URL || 'wss://solar-sense-backend.onrender.com',
   
   // Authentication
   JWT_SECRET: process.env.NEXT_PUBLIC_JWT_SECRET || 'your-super-secret-jwt-key-change-in-production',

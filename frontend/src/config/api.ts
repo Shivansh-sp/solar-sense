@@ -1,15 +1,15 @@
 // API Configuration for different environments
 const API_CONFIG = {
   development: {
-    baseURL: 'http://localhost:5000',
+    baseURL: 'https://solar-sense-backend.onrender.com',
     timeout: 10000,
   },
   production: {
-    baseURL: process.env.NEXT_PUBLIC_API_URL || 'https://solarsense-backend.onrender.com',
+    baseURL: process.env.NEXT_PUBLIC_API_URL || 'https://solar-sense-backend.onrender.com',
     timeout: 15000,
   },
   staging: {
-    baseURL: process.env.NEXT_PUBLIC_API_URL || 'https://solarsense-backend-staging.onrender.com',
+    baseURL: process.env.NEXT_PUBLIC_API_URL || 'https://solar-sense-backend.onrender.com',
     timeout: 15000,
   }
 }

@@ -30,7 +30,7 @@ const app = express();
 const server = createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: process.env.CORS_ORIGIN || "http://localhost:3000",
+    origin: process.env.CORS_ORIGIN || "https://solar-sense-frontend.vercel.app",
     methods: ["GET", "POST"]
   }
 });
@@ -51,7 +51,7 @@ app.use('/api/', limiter);
 
 // CORS configuration
 app.use(cors({
-  origin: process.env.CORS_ORIGIN || "http://localhost:3000",
+  origin: process.env.CORS_ORIGIN || "https://solar-sense-frontend.vercel.app",
   credentials: true
 }));
 
@@ -160,7 +160,7 @@ const PORT = process.env.PORT || 5000;
 server.listen(PORT, () => {
   console.log(`🚀 SolarSense Backend running on port ${PORT}`);
   console.log(`📊 Environment: ${process.env.NODE_ENV}`);
-  console.log(`🔗 CORS enabled for: ${process.env.CORS_ORIGIN || "http://localhost:3000"}`);
+  console.log(`🔗 CORS enabled for: ${process.env.CORS_ORIGIN || "https://solar-sense-frontend.vercel.app"}`);
   
   // Initialize services after server starts
   initializeServices();

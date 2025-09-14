@@ -16,7 +16,7 @@ const environments = {
     PORT: '5000',
     JWT_SECRET: 'solarsense-super-secret-jwt-key-2024',
     JWT_EXPIRE: '7d',
-    CORS_ORIGIN: 'http://localhost:3000',
+    CORS_ORIGIN: 'https://solar-sense-frontend.vercel.app',
     BCRYPT_ROUNDS: '12',
     RATE_LIMIT_WINDOW_MS: '900000',
     RATE_LIMIT_MAX_REQUESTS: '100',

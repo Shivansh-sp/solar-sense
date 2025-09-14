@@ -17,7 +17,7 @@ JWT_EXPIRE=7d
 
 # API Configuration
 API_VERSION=v1
-CORS_ORIGIN=http://localhost:3000
+CORS_ORIGIN=https://solar-sense-frontend.vercel.app
 
 # Security
 BCRYPT_ROUNDS=12
@@ -34,8 +34,8 @@ STRIPE_WEBHOOK_SECRET=whsec_your_webhook_secret_here
 
 ### Required Variables (.env.local)
 ```env
-NEXT_PUBLIC_API_URL=http://localhost:5000/api
-NEXT_PUBLIC_WS_URL=ws://localhost:5000
+NEXT_PUBLIC_API_URL=https://solar-sense-backend.onrender.com/api
+NEXT_PUBLIC_WS_URL=wss://solar-sense-backend.onrender.com
 NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_your_stripe_publishable_key_here
 NEXT_PUBLIC_GEMINI_API_KEY=your-gemini-api-key-here
 ```

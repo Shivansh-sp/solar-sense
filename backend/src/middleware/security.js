@@ -96,8 +96,7 @@ const corsOptions = {
     if (!origin) return callback(null, true);
     
     const allowedOrigins = [
-      'http://localhost:3000',
-      'http://localhost:3001',
+      'https://solar-sense-frontend.vercel.app',
       'https://solarsense.vercel.app',
       'https://solarsense-frontend.vercel.app',
       process.env.CORS_ORIGIN

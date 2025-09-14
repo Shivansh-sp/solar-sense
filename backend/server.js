@@ -55,7 +55,7 @@ const server = createServer(app);
 // Socket.IO configuration
 const io = new Server(server, {
   cors: {
-    origin: process.env.CORS_ORIGIN || "http://localhost:3000",
+    origin: process.env.CORS_ORIGIN || "https://solar-sense-frontend.vercel.app",
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true
   }
@@ -263,7 +263,7 @@ server.listen(PORT, () => {
   console.log('============================');
   console.log(`🚀 Server running on port ${PORT}`);
   console.log(`📊 Environment: ${process.env.NODE_ENV || 'development'}`);
-  console.log(`🔗 CORS enabled for: ${process.env.CORS_ORIGIN || "http://localhost:3000"}`);
+  console.log(`🔗 CORS enabled for: ${process.env.CORS_ORIGIN || "https://solar-sense-frontend.vercel.app"}`);
   console.log(`💾 Database: MongoDB Atlas`);
   console.log(`🔌 WebSocket: Enabled`);
   console.log(`⏰ Started at: ${new Date().toISOString()}`);
