@@ -8,7 +8,7 @@ const {
   constructWebhookEvent,
   STRIPE_CONFIG
 } = require('../config/stripe');
-const auth = require('../middleware/auth');
+const { auth } = require('../middleware/auth');
 
 // Create payment intent for energy trading
 router.post('/create-payment-intent', auth, async (req, res) => {
