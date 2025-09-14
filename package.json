@@ -1,0 +1,22 @@
+{
+  "name": "solarsense",
+  "version": "1.0.0",
+  "description": "SolarSense: Intelligent Energy Solutions - Decentralized energy trading platform",
+  "main": "server/index.js",
+  "scripts": {
+    "dev": "concurrently \"npm run backend\" \"npm run frontend\"",
+    "backend": "cd backend && npm run dev",
+    "frontend": "cd frontend && npm run dev",
+    "build": "cd frontend && npm run build",
+    "start": "cd backend && npm start",
+    "install-all": "npm install && cd backend && npm install && cd ../frontend && npm install",
+    "start-frontend": "cd frontend && npm run dev",
+    "start-backend": "cd backend && npm run dev"
+  },
+  "keywords": ["solar", "energy", "trading", "blockchain", "machine-learning", "smart-grid"],
+  "author": "SolarSense Team",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
