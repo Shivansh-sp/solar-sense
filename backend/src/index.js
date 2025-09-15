@@ -42,6 +42,8 @@ const io = new Server(server, {
 });
 
 // Connect to MongoDB
+// Note: connectDB is async but we don't await it here
+// The server will start even if DB connection fails
 connectDB();
 
 // Security middleware

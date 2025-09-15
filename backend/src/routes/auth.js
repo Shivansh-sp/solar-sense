@@ -2,6 +2,7 @@ const express = require('express');
 const jwt = require('jsonwebtoken');
 const { body, validationResult } = require('express-validator');
 const { auth } = require('../middleware/auth');
+const { checkDatabase } = require('../middleware/dbCheck');
 const User = require('../models/User');
 
 const router = express.Router();
@@ -13,7 +14,7 @@ router.post('/register', [
   body('email').isEmail().normalizeEmail(),
   body('password').isLength({ min: 6 }),
   body('name').notEmpty().trim()
-], async (req, res) => {
+], checkDatabase, async (req, res) => {
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -85,7 +86,7 @@ router.post('/register', [
 router.post('/login', [
   body('email').isEmail().normalizeEmail(),
   body('password').exists()
-], async (req, res) => {
+], checkDatabase, async (req, res) => {
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -162,7 +163,7 @@ router.post('/google', [
   body('googleId').notEmpty(),
   body('email').isEmail().normalizeEmail(),
   body('name').notEmpty().trim()
-], async (req, res) => {
+], checkDatabase, async (req, res) => {
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
