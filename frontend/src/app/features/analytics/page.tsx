@@ -7,8 +7,8 @@ import {
   CurrencyRupeeIcon,
   WrenchScrewdriverIcon,
   BoltIcon,
-  TrendingUpIcon,
-  TrendingDownIcon
+  ArrowTrendingUpIcon,
+  ArrowTrendingDownIcon
 } from '@heroicons/react/24/outline';
 
 interface AnalyticsData {
@@ -121,7 +121,7 @@ export default function AnalyticsPage() {
                   {analyticsData.energySold.total.toLocaleString()} kWh
                 </p>
                 <p className="text-sm text-green-600 flex items-center">
-                  <TrendingUpIcon className="h-4 w-4 mr-1" />
+                  <ArrowTrendingUpIcon className="h-4 w-4 mr-1" />
                   +{analyticsData.energySold.growth}%
                 </p>
               </div>
@@ -221,7 +221,7 @@ export default function AnalyticsPage() {
                   <p className="text-sm text-gray-600">vs last month</p>
                 </div>
                 <p className="text-xl font-bold text-purple-600 flex items-center">
-                  <TrendingUpIcon className="h-5 w-5 mr-1" />
+                  <ArrowTrendingUpIcon className="h-5 w-5 mr-1" />
                   +{analyticsData.energySold.growth}%
                 </p>
               </div>
@@ -295,7 +295,7 @@ export default function AnalyticsPage() {
             </div>
             <div className="text-center p-6 bg-purple-50 rounded-lg">
               <div className="w-16 h-16 bg-purple-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                <TrendingUpIcon className="h-8 w-8 text-white" />
+                <ArrowTrendingUpIcon className="h-8 w-8 text-white" />
               </div>
               <h3 className="text-lg font-semibold text-gray-900 mb-2">Overall Efficiency</h3>
               <p className="text-3xl font-bold text-purple-600">{analyticsData.efficiency.overall}%</p>

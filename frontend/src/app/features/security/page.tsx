@@ -5,7 +5,6 @@ import { motion } from 'framer-motion';
 import { 
   ShieldCheckIcon, 
   LockClosedIcon,
-  DocumentTextIcon,
   ExclamationTriangleIcon,
   CheckCircleIcon,
   EyeIcon,
@@ -16,7 +15,7 @@ import {
 interface SecurityFeature {
   title: string;
   description: string;
-  icon: React.ComponentType<any>;
+  icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
   status: 'active' | 'pending' | 'disabled';
 }
 
@@ -231,7 +230,7 @@ export default function SecurityPage() {
 
               <h3 className="text-lg font-semibold text-gray-900 mb-4">3. Disclaimer</h3>
               <p className="text-gray-600 mb-6">
-                The materials on SolarSense are provided on an 'as is' basis. SolarSense makes no warranties, expressed or implied, and hereby disclaims and negates all other warranties including without limitation, implied warranties or conditions of merchantability, fitness for a particular purpose, or non-infringement of intellectual property or other violation of rights.
+                The materials on SolarSense are provided on an &apos;as is&apos; basis. SolarSense makes no warranties, expressed or implied, and hereby disclaims and negates all other warranties including without limitation, implied warranties or conditions of merchantability, fitness for a particular purpose, or non-infringement of intellectual property or other violation of rights.
               </p>
 
               <h3 className="text-lg font-semibold text-gray-900 mb-4">4. Limitations</h3>
@@ -246,7 +245,7 @@ export default function SecurityPage() {
 
               <h3 className="text-lg font-semibold text-gray-900 mb-4">6. Links</h3>
               <p className="text-gray-600 mb-6">
-                SolarSense has not reviewed all of the sites linked to our website and is not responsible for the contents of any such linked site. The inclusion of any link does not imply endorsement by SolarSense of the site. Use of any such linked website is at the user's own risk.
+                SolarSense has not reviewed all of the sites linked to our website and is not responsible for the contents of any such linked site. The inclusion of any link does not imply endorsement by SolarSense of the site. Use of any such linked website is at the user&apos;s own risk.
               </p>
 
               <h3 className="text-lg font-semibold text-gray-900 mb-4">7. Modifications</h3>
@@ -341,7 +340,7 @@ export default function SecurityPage() {
 
               <h3 className="text-lg font-semibold text-gray-900 mb-4">8. Changes to This Policy</h3>
               <p className="text-gray-600 mb-6">
-                We may update this privacy policy from time to time. We will notify you of any changes by posting the new policy on this page and updating the "Last Updated" date.
+                We may update this privacy policy from time to time. We will notify you of any changes by posting the new policy on this page and updating the &quot;Last Updated&quot; date.
               </p>
 
               <h3 className="text-lg font-semibold text-gray-900 mb-4">9. Contact Us</h3>
