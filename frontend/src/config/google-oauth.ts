@@ -3,7 +3,7 @@ const getRedirectUri = () => {
   if (typeof window !== 'undefined') {
     return process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI || `${window.location.origin}/auth/google/callback`
   }
-  return process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI || 'http://localhost:3000/auth/google/callback'
+  return process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI || 'https://solar-sense-final.onrender.com/auth/google/callback'
 }
 
 export const GOOGLE_OAUTH_CONFIG = {

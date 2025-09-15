@@ -32,8 +32,7 @@ const io = new Server(server, {
   cors: {
     origin: [
       process.env.CORS_ORIGIN || "https://solar-sense-frontend.vercel.app",
-      "https://solar-sense-final.onrender.com",
-      "http://localhost:3000"
+      "https://solar-sense-final.onrender.com"
     ],
     methods: ["GET", "POST"]
   }
@@ -57,8 +56,7 @@ app.use('/api/', limiter);
 app.use(cors({
   origin: [
     process.env.CORS_ORIGIN || "https://solar-sense-frontend.vercel.app",
-    "https://solar-sense-final.onrender.com",
-    "http://localhost:3000"
+    "https://solar-sense-final.onrender.com"
   ],
   credentials: true
 }));
