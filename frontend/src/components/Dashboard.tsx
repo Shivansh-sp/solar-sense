@@ -18,11 +18,13 @@ import {
   CogIcon,
   SunIcon,
   ChartPieIcon,
-  ArrowLeftIcon
+  ArrowLeftIcon,
+  ArrowRightOnRectangleIcon,
+  UserIcon
 } from '@heroicons/react/24/outline'
 
 export default function Dashboard() {
-  const { user } = useAuth()
+  const { user, logout } = useAuth()
   const [activeTab, setActiveTab] = useState<string>('overview')
   // Removed dashboardData as components now use their own data
   const [loading, setLoading] = useState<boolean>(true)
@@ -92,13 +94,30 @@ export default function Dashboard() {
             </div>
 
             <div className="flex items-center space-x-4">
-              <Link
-                href="/"
+              <button
+                onClick={logout}
                 className="flex items-center space-x-2 px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors duration-200"
               >
                 <ArrowLeftIcon className="w-4 h-4" />
-                <span>Back to Home</span>
-              </Link>
+                <span>View Landing Page</span>
+              </button>
+              
+              <div className="flex items-center space-x-2">
+                <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+                  <UserIcon className="w-5 h-5 text-green-600" />
+                </div>
+                <span className="text-sm font-medium text-gray-700">
+                  {user?.name || 'User'}
+                </span>
+              </div>
+              
+              <button
+                onClick={logout}
+                className="flex items-center space-x-1 text-gray-600 hover:text-red-600 transition-colors duration-200"
+              >
+                <ArrowRightOnRectangleIcon className="w-4 h-4" />
+                <span className="text-sm">Logout</span>
+              </button>
             </div>
           </div>
         </div>
@@ -113,6 +132,55 @@ export default function Dashboard() {
           <p className="text-gray-600">
             Monitor and manage your energy ecosystem
           </p>
+        </div>
+
+        {/* Feature Navigation */}
+        <div className="mb-8">
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">Quick Access to Features</h2>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+            <Link
+              href="/features/analytics"
+              className="flex flex-col items-center p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow border border-gray-200"
+            >
+              <ChartBarIcon className="w-8 h-8 text-blue-500 mb-2" />
+              <span className="text-sm font-medium text-gray-700">Analytics</span>
+            </Link>
+            <Link
+              href="/features/forecasting"
+              className="flex flex-col items-center p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow border border-gray-200"
+            >
+              <SunIcon className="w-8 h-8 text-yellow-500 mb-2" />
+              <span className="text-sm font-medium text-gray-700">Forecasting</span>
+            </Link>
+            <Link
+              href="/features/revenue"
+              className="flex flex-col items-center p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow border border-gray-200"
+            >
+              <BoltIcon className="w-8 h-8 text-green-500 mb-2" />
+              <span className="text-sm font-medium text-gray-700">Revenue</span>
+            </Link>
+            <Link
+              href="/features/smart-homes"
+              className="flex flex-col items-center p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow border border-gray-200"
+            >
+              <HomeIcon className="w-8 h-8 text-purple-500 mb-2" />
+              <span className="text-sm font-medium text-gray-700">Smart Homes</span>
+            </Link>
+            <Link
+              href="/features/grid"
+              className="flex flex-col items-center p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow border border-gray-200"
+            >
+              <CogIcon className="w-8 h-8 text-orange-500 mb-2" />
+              <span className="text-sm font-medium text-gray-700">Grid</span>
+            </Link>
+            <Link
+              href="/features/community"
+              className="flex flex-col items-center p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow border border-gray-200"
+            >
+              <UserIcon className="w-8 h-8 text-pink-500 mb-2" />
+              <span className="text-sm font-medium text-gray-700">Community</span>
+            </Link>
+          </div>
         </div>
 
         {/* Tab Navigation */}
