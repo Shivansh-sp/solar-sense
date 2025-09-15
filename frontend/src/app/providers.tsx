@@ -55,34 +55,44 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     // Check for stored auth token
     const token = localStorage.getItem('token')
     if (token) {
+      console.log('Found stored token, verifying with:', `${API_BASE_URL}/me`)
       // Verify token with backend
       fetch(`${API_BASE_URL}/me`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
       })
-      .then(res => res.json())
+      .then(res => {
+        console.log('Token verification response status:', res.status)
+        return res.json()
+      })
       .then(data => {
+        console.log('Token verification response data:', data)
         if (data.success) {
           setUser(data.user)
         } else {
+          console.log('Token verification failed, removing token')
           localStorage.removeItem('token')
         }
       })
-      .catch(() => {
+      .catch((error) => {
+        console.error('Token verification error:', error)
         localStorage.removeItem('token')
       })
       .finally(() => {
         setLoading(false)
       })
     } else {
+      console.log('No stored token found')
       setLoading(false)
     }
   }, [])
 
   const login = async (email: string, password: string) => {
     try {
+      console.log('API_BASE_URL:', API_BASE_URL)
       console.log('Attempting login to:', `${API_BASE_URL}/login`)
+      console.log('Login data:', { email, password })
       
       const response = await fetch(`${API_BASE_URL}/login`, {
         method: 'POST',
@@ -93,9 +103,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       })
 
       console.log('Login response status:', response.status)
+      console.log('Login response headers:', Object.fromEntries(response.headers.entries()))
 
       if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`)
+        const errorText = await response.text()
+        console.log('Error response body:', errorText)
+        throw new Error(`HTTP ${response.status}: ${response.statusText} - ${errorText}`)
       }
 
       const data = await response.json()
