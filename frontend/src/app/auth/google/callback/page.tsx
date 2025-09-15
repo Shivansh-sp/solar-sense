@@ -1,65 +1,10 @@
-'use client'
-
-import { useEffect, useState } from 'react'
-import { useSearchParams } from 'next/navigation'
-
-// Prevent prerendering of this page
-export const dynamic = 'force-dynamic'
-
 export default function GoogleCallbackPage() {
-  const searchParams = useSearchParams()
-  const [mounted, setMounted] = useState(false)
-
-  useEffect(() => {
-    setMounted(true)
-  }, [])
-
-  useEffect(() => {
-    if (!mounted || typeof window === 'undefined') return
-
-    const code = searchParams.get('code')
-    const error = searchParams.get('error')
-
-    if (error) {
-      // Send error to parent window
-      if (window.opener) {
-        window.opener.postMessage({
-          type: 'GOOGLE_AUTH_ERROR',
-          error: error
-        }, window.location.origin)
-        window.close()
-      }
-      return
-    }
-
-    if (code) {
-      // Send success to parent window
-      if (window.opener) {
-        window.opener.postMessage({
-          type: 'GOOGLE_AUTH_SUCCESS',
-          code: code
-        }, window.location.origin)
-        window.close()
-      }
-    }
-  }, [searchParams, mounted])
-
-  if (!mounted) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading...</p>
-        </div>
-      </div>
-    )
-  }
-
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <div className="text-center">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
         <p className="text-gray-600">Completing Google authentication...</p>
+        <p className="text-sm text-gray-500 mt-2">Please wait while we process your authentication.</p>
       </div>
     </div>
   )

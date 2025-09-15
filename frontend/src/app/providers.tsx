@@ -136,50 +136,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       // Dynamic import to avoid SSR issues
       const { generateGoogleAuthUrl } = await import('@/config/google-oauth')
       
-      // Open Google OAuth popup
+      // Use redirect instead of popup to avoid SSR issues
       const authUrl = generateGoogleAuthUrl()
-      const popup = window.open(
-        authUrl,
-        'google-auth',
-        'width=500,height=600,scrollbars=yes,resizable=yes'
-      )
-
-      if (!popup) {
-        throw new Error('Popup blocked. Please allow popups for this site.')
-      }
-
-      // Listen for the popup to close or receive message
-      return new Promise<void>((resolve, reject) => {
-        const checkClosed = setInterval(() => {
-          if (popup.closed) {
-            clearInterval(checkClosed)
-            reject(new Error('Authentication cancelled'))
-          }
-        }, 1000)
-
-        // Listen for message from popup
-        const messageListener = (event: MessageEvent) => {
-          if (event.origin !== window.location.origin) return
-
-          if (event.data.type === 'GOOGLE_AUTH_SUCCESS') {
-            clearInterval(checkClosed)
-            window.removeEventListener('message', messageListener)
-            popup.close()
-
-            const { code } = event.data
-            handleGoogleCallback(code)
-              .then(() => resolve())
-              .catch(reject)
-          } else if (event.data.type === 'GOOGLE_AUTH_ERROR') {
-            clearInterval(checkClosed)
-            window.removeEventListener('message', messageListener)
-            popup.close()
-            reject(new Error(event.data.error || 'Google authentication failed'))
-          }
-        }
-
-        window.addEventListener('message', messageListener)
-      })
+      
+      // Store the current URL to return to after OAuth
+      localStorage.setItem('oauth_return_url', window.location.pathname)
+      
+      // Redirect to Google OAuth
+      window.location.href = authUrl
     } catch (error) {
       throw error
     }
