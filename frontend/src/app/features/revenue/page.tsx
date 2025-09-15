@@ -7,10 +7,11 @@ import {
   ChartBarIcon,
   LightBulbIcon,
   CogIcon,
-  TrendingUpIcon,
+  ArrowTrendingUpIcon,
   ClockIcon,
   SunIcon,
-  BoltIcon
+  BoltIcon,
+  WrenchScrewdriverIcon
 } from '@heroicons/react/24/outline';
 
 interface OptimizationStrategy {
@@ -180,7 +181,7 @@ export default function RevenueOptimizationPage() {
           >
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-xl font-bold text-gray-900">Optimized Revenue</h2>
-              <TrendingUpIcon className="h-8 w-8 text-green-500" />
+              <ArrowTrendingUpIcon className="h-8 w-8 text-green-500" />
             </div>
             <p className="text-3xl font-bold text-green-600 mb-2">
               ₹{optimizedRevenue.toLocaleString()}
