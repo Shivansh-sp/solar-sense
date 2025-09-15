@@ -4,12 +4,9 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { 
   CurrencyRupeeIcon, 
-  ChartBarIcon,
   LightBulbIcon,
   CogIcon,
   ArrowTrendingUpIcon,
-  ClockIcon,
-  SunIcon,
   BoltIcon,
   WrenchScrewdriverIcon
 } from '@heroicons/react/24/outline';

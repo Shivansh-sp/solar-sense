@@ -20,6 +20,7 @@ import LoginModal from './LoginModal';
 import DemoModal from './DemoModal';
 import Chatbot from './Chatbot';
 import CodeTyransLogo from './CodeTyransLogo';
+import DemoVideo from './DemoVideo';
 
 const features = [
   {
@@ -284,6 +285,78 @@ export default function Hero() {
           </motion.div>
         </div>
       </div>
+
+      {/* Demo Video Section */}
+      <motion.section
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+        viewport={{ once: true }}
+        className="py-20 px-4 bg-gradient-to-b from-slate-900 to-slate-800"
+      >
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              className="text-5xl font-bold text-white mb-6"
+            >
+              See SolarSense in Action
+            </motion.h2>
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="text-xl text-gray-300 max-w-3xl mx-auto"
+            >
+              Watch our comprehensive demo to see how SolarSense transforms solar energy management 
+              with AI-powered forecasting, decentralized trading, and smart analytics.
+            </motion.p>
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+            viewport={{ once: true }}
+            className="max-w-4xl mx-auto"
+          >
+            <DemoVideo className="w-full" />
+          </motion.div>
+
+          {/* Video Features */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            viewport={{ once: true }}
+            className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16"
+          >
+            <div className="text-center">
+              <div className="w-16 h-16 bg-gradient-to-r from-green-500 to-blue-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                <PlayIcon className="w-8 h-8 text-white" />
+              </div>
+              <h3 className="text-xl font-semibold text-white mb-2">Interactive Demo</h3>
+              <p className="text-gray-400">Explore all features with hands-on experience</p>
+            </div>
+            <div className="text-center">
+              <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                <ChartBarIcon className="w-8 h-8 text-white" />
+              </div>
+              <h3 className="text-xl font-semibold text-white mb-2">Real Data</h3>
+              <p className="text-gray-400">See actual performance metrics and analytics</p>
+            </div>
+            <div className="text-center">
+              <div className="w-16 h-16 bg-gradient-to-r from-orange-500 to-red-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                <BoltIcon className="w-8 h-8 text-white" />
+              </div>
+              <h3 className="text-xl font-semibold text-white mb-2">Live Trading</h3>
+              <p className="text-gray-400">Witness peer-to-peer energy trading in action</p>
+            </div>
+          </motion.div>
+        </div>
+      </motion.section>
 
       {/* Login Modal */}
       <LoginModal 

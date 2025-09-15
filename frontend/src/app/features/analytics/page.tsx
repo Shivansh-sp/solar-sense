@@ -7,8 +7,7 @@ import {
   CurrencyRupeeIcon,
   WrenchScrewdriverIcon,
   BoltIcon,
-  ArrowTrendingUpIcon,
-  ArrowTrendingDownIcon
+  ArrowTrendingUpIcon
 } from '@heroicons/react/24/outline';
 
 interface AnalyticsData {
