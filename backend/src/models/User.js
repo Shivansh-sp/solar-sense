@@ -12,9 +12,20 @@ const userSchema = new mongoose.Schema({
       'Please add a valid email'
     ]
   },
+  googleId: {
+    type: String,
+    unique: true,
+    sparse: true // Allows null values but ensures uniqueness when present
+  },
+  picture: {
+    type: String,
+    default: null
+  },
   password: {
     type: String,
-    required: [true, 'Please add a password'],
+    required: function() {
+      return !this.googleId; // Only required if not using Google OAuth
+    },
     minlength: 6,
     select: false
   },

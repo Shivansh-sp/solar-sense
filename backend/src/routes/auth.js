@@ -159,6 +159,86 @@ router.post('/login', [
   }
 });
 
+// @route   POST /api/auth/google
+// @desc    Google OAuth login/register
+// @access  Public
+router.post('/google', [
+  body('googleId').notEmpty(),
+  body('email').isEmail().normalizeEmail(),
+  body('name').notEmpty().trim()
+], async (req, res) => {
+  try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({
+        success: false,
+        message: 'Validation errors',
+        errors: errors.array()
+      });
+    }
+
+    const { googleId, email, name, picture, verified } = req.body;
+
+    // Check if user already exists by email
+    let user = await User.findOne({ email });
+    
+    if (user) {
+      // Update user with Google ID if not already set
+      if (!user.googleId) {
+        user.googleId = googleId;
+        user.picture = picture;
+        await user.save();
+      }
+    } else {
+      // Create new user
+      user = await User.create({
+        email,
+        name,
+        googleId,
+        picture,
+        role: 'resident',
+        householdId: `household-${Date.now()}`,
+        isActive: true
+      });
+    }
+
+    // Generate JWT
+    const payload = {
+      user: {
+        id: user._id,
+        email: user.email,
+        role: user.role,
+        name: user.name,
+        householdId: user.householdId
+      }
+    };
+
+    const token = jwt.sign(payload, process.env.JWT_SECRET, {
+      expiresIn: process.env.JWT_EXPIRE || '7d'
+    });
+
+    res.json({
+      success: true,
+      message: 'Google authentication successful',
+      token,
+      user: {
+        id: user._id,
+        email: user.email,
+        role: user.role,
+        name: user.name,
+        householdId: user.householdId
+      }
+    });
+
+  } catch (error) {
+    console.error('Google auth error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Server error during Google authentication'
+    });
+  }
+});
+
 // @route   GET /api/auth/me
 // @desc    Get current user
 // @access  Private

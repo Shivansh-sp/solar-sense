@@ -3,6 +3,7 @@
 import { createContext, useContext, useEffect, useState } from 'react'
 import { io, Socket } from 'socket.io-client'
 import { API_BASE_URL } from '@/config/api'
+import { generateGoogleAuthUrl, exchangeCodeForToken, getGoogleUserInfo } from '@/config/google-oauth'
 
 // Types
 interface User {
@@ -13,9 +14,26 @@ interface User {
   householdId?: string
 }
 
+interface SignUpData {
+  username: string
+  email: string
+  password: string
+  confirmPassword: string
+  phoneNumber: string
+  state: string
+  district: string
+  address: string
+  householdName: string
+  solarCapacity: string
+  batteryStorage: string
+  confirmDetails: boolean
+}
+
 interface AuthContextType {
   user: User | null
   login: (email: string, password: string) => Promise<void>
+  signup: (userData: SignUpData) => Promise<void>
+  loginWithGoogle: () => Promise<void>
   logout: () => void
   loading: boolean
 }
@@ -86,13 +104,128 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }
 
+  const signup = async (userData: SignUpData) => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/auth/register`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: userData.username,
+          email: userData.email,
+          password: userData.password,
+          role: 'resident'
+        }),
+      })
+
+      const data = await response.json()
+
+      if (data.success) {
+        localStorage.setItem('token', data.token)
+        setUser(data.user)
+      } else {
+        throw new Error(data.message || 'Signup failed')
+      }
+    } catch (error) {
+      throw error
+    }
+  }
+
+  const loginWithGoogle = async () => {
+    try {
+      // Open Google OAuth popup
+      const authUrl = generateGoogleAuthUrl()
+      const popup = window.open(
+        authUrl,
+        'google-auth',
+        'width=500,height=600,scrollbars=yes,resizable=yes'
+      )
+
+      if (!popup) {
+        throw new Error('Popup blocked. Please allow popups for this site.')
+      }
+
+      // Listen for the popup to close or receive message
+      return new Promise<void>((resolve, reject) => {
+        const checkClosed = setInterval(() => {
+          if (popup.closed) {
+            clearInterval(checkClosed)
+            reject(new Error('Authentication cancelled'))
+          }
+        }, 1000)
+
+        // Listen for message from popup
+        const messageListener = (event: MessageEvent) => {
+          if (event.origin !== window.location.origin) return
+
+          if (event.data.type === 'GOOGLE_AUTH_SUCCESS') {
+            clearInterval(checkClosed)
+            window.removeEventListener('message', messageListener)
+            popup.close()
+
+            const { code } = event.data
+            handleGoogleCallback(code)
+              .then(() => resolve())
+              .catch(reject)
+          } else if (event.data.type === 'GOOGLE_AUTH_ERROR') {
+            clearInterval(checkClosed)
+            window.removeEventListener('message', messageListener)
+            popup.close()
+            reject(new Error(event.data.error || 'Google authentication failed'))
+          }
+        }
+
+        window.addEventListener('message', messageListener)
+      })
+    } catch (error) {
+      throw error
+    }
+  }
+
+  const handleGoogleCallback = async (code: string) => {
+    try {
+      // Exchange code for token
+      const tokenData = await exchangeCodeForToken(code)
+      
+      // Get user info from Google
+      const googleUser = await getGoogleUserInfo(tokenData.access_token)
+
+      // Send to backend for verification and user creation/login
+      const response = await fetch(`${API_BASE_URL}/api/auth/google`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          googleId: googleUser.id,
+          email: googleUser.email,
+          name: googleUser.name,
+          picture: googleUser.picture,
+          verified: googleUser.verified_email
+        }),
+      })
+
+      const data = await response.json()
+
+      if (data.success) {
+        localStorage.setItem('token', data.token)
+        setUser(data.user)
+      } else {
+        throw new Error(data.message || 'Google authentication failed')
+      }
+    } catch (error) {
+      throw error
+    }
+  }
+
   const logout = () => {
     localStorage.removeItem('token')
     setUser(null)
   }
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, loading }}>
+    <AuthContext.Provider value={{ user, login, signup, loginWithGoogle, logout, loading }}>
       {children}
     </AuthContext.Provider>
   )
