@@ -4,7 +4,20 @@ import { useState } from 'react'
 import { API_BASE_URL } from '@/config/api'
 
 export default function TestBackendPage() {
-  const [testResult, setTestResult] = useState<any>(null)
+  const [testResult, setTestResult] = useState<{
+    success: boolean;
+    backendUrl: string;
+    health?: {
+      status: number;
+      data: unknown;
+    };
+    auth?: {
+      status: number;
+      data: unknown;
+    };
+    error?: string;
+    timestamp: string;
+  } | null>(null)
   const [loading, setLoading] = useState(false)
 
   const testBackendConnection = async () => {

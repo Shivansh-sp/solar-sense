@@ -5,6 +5,10 @@ export async function GET(request: NextRequest) {
   // These are used in the HTML template
   const code = searchParams.get('code')
   const error = searchParams.get('error')
+  
+  // Suppress unused variable warnings since they're used in the HTML template
+  void code
+  void error
 
   // Create HTML response that handles the OAuth callback
   const html = `

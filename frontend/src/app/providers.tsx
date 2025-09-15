@@ -169,6 +169,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }
 
+  // This function is kept for potential future use but not currently used
+  // since we're using redirect-based OAuth flow
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const handleGoogleCallback = async (code: string) => {
     try {
       // Dynamic import to avoid SSR issues
