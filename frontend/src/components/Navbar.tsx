@@ -8,8 +8,10 @@ import {
   XMarkIcon, 
   SunIcon, 
   UserIcon,
-  ArrowRightOnRectangleIcon
+  ArrowRightOnRectangleIcon,
+  HomeIcon
 } from '@heroicons/react/24/outline'
+import Link from 'next/link'
 
 export default function Navbar() {
   const { user, logout } = useAuth()
@@ -25,7 +27,7 @@ export default function Navbar() {
   }, [])
 
   const navigation = [
-    { name: 'Home', href: '#home' },
+    { name: 'Home', href: '/', icon: HomeIcon },
     { name: 'Features', href: '#features' },
     { name: 'Demo', href: '#demo' },
     { name: 'About', href: '#about' },
@@ -61,17 +63,34 @@ export default function Navbar() {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
-            {navigation.map((item) => (
-              <motion.a
-                key={item.name}
-                href={item.href}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="text-gray-700 hover:text-green-600 font-medium transition-colors duration-200"
-              >
-                {item.name}
-              </motion.a>
-            ))}
+            {navigation.map((item) => {
+              const Icon = item.icon
+              return (
+                <motion.div
+                  key={item.name}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  {item.name === 'Home' ? (
+                    <Link
+                      href={item.href}
+                      className="flex items-center space-x-2 text-gray-700 hover:text-green-600 font-medium transition-colors duration-200"
+                    >
+                      {Icon && <Icon className="w-4 h-4" />}
+                      <span>{item.name}</span>
+                    </Link>
+                  ) : (
+                    <a
+                      href={item.href}
+                      className="flex items-center space-x-2 text-gray-700 hover:text-green-600 font-medium transition-colors duration-200"
+                    >
+                      {Icon && <Icon className="w-4 h-4" />}
+                      <span>{item.name}</span>
+                    </a>
+                  )}
+                </motion.div>
+              )
+            })}
           </div>
 
           {/* User Menu / Auth Buttons */}
@@ -145,17 +164,34 @@ export default function Navbar() {
             className="md:hidden bg-white/95 backdrop-blur-md border-t border-gray-200"
           >
             <div className="px-4 py-6 space-y-4">
-              {navigation.map((item) => (
-                <motion.a
-                  key={item.name}
-                  href={item.href}
-                  whileHover={{ x: 10 }}
-                  onClick={() => setIsOpen(false)}
-                  className="block text-gray-700 hover:text-green-600 font-medium transition-colors duration-200"
-                >
-                  {item.name}
-                </motion.a>
-              ))}
+              {navigation.map((item) => {
+                const Icon = item.icon
+                return (
+                  <motion.div
+                    key={item.name}
+                    whileHover={{ x: 10 }}
+                    onClick={() => setIsOpen(false)}
+                  >
+                    {item.name === 'Home' ? (
+                      <Link
+                        href={item.href}
+                        className="flex items-center space-x-2 text-gray-700 hover:text-green-600 font-medium transition-colors duration-200"
+                      >
+                        {Icon && <Icon className="w-4 h-4" />}
+                        <span>{item.name}</span>
+                      </Link>
+                    ) : (
+                      <a
+                        href={item.href}
+                        className="flex items-center space-x-2 text-gray-700 hover:text-green-600 font-medium transition-colors duration-200"
+                      >
+                        {Icon && <Icon className="w-4 h-4" />}
+                        <span>{item.name}</span>
+                      </a>
+                    )}
+                  </motion.div>
+                )
+              })}
               
               {user ? (
                 <div className="pt-4 border-t border-gray-200 space-y-4">
