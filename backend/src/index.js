@@ -19,6 +19,7 @@ const marketRoutes = require('./routes/market');
 const forecastRoutes = require('./routes/forecast');
 const deviceRoutes = require('./routes/device');
 const dashboardRoutes = require('./routes/dashboard');
+const debugRoutes = require('./routes/debug');
 
 // Import services
 const MLService = require('./services/MLService');
@@ -89,6 +90,7 @@ app.use('/api/market', marketRoutes);
 app.use('/api/forecast', forecastRoutes);
 app.use('/api/device', deviceRoutes);
 app.use('/api/dashboard', dashboardRoutes);
+app.use('/api/debug', debugRoutes);
 
 // WebSocket connection handling
 io.on('connection', (socket) => {
