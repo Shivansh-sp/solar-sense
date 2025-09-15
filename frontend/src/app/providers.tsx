@@ -3,7 +3,6 @@
 import { createContext, useContext, useEffect, useState } from 'react'
 import { io, Socket } from 'socket.io-client'
 import { API_BASE_URL } from '@/config/api'
-import { generateGoogleAuthUrl, exchangeCodeForToken, getGoogleUserInfo } from '@/config/google-oauth'
 
 // Types
 interface User {
@@ -134,6 +133,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const loginWithGoogle = async () => {
     try {
+      // Dynamic import to avoid SSR issues
+      const { generateGoogleAuthUrl } = await import('@/config/google-oauth')
+      
       // Open Google OAuth popup
       const authUrl = generateGoogleAuthUrl()
       const popup = window.open(
@@ -185,6 +187,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const handleGoogleCallback = async (code: string) => {
     try {
+      // Dynamic import to avoid SSR issues
+      const { exchangeCodeForToken, getGoogleUserInfo } = await import('@/config/google-oauth')
+      
       // Exchange code for token
       const tokenData = await exchangeCodeForToken(code)
       

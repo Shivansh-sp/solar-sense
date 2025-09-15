@@ -1,7 +1,16 @@
-// Google OAuth Configuration
+// Google OAuth Configuration - SSR safe
+const getRedirectUri = () => {
+  if (typeof window !== 'undefined') {
+    return process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI || `${window.location.origin}/auth/google/callback`
+  }
+  return process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI || 'http://localhost:3000/auth/google/callback'
+}
+
 export const GOOGLE_OAUTH_CONFIG = {
   clientId: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || 'your-google-client-id',
-  redirectUri: process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI || `${window.location.origin}/auth/google/callback`,
+  get redirectUri() {
+    return getRedirectUri()
+  },
   scope: 'openid email profile',
   responseType: 'code',
   accessType: 'offline',
@@ -17,6 +26,11 @@ export const GOOGLE_OAUTH_URLS = {
 
 // Generate Google OAuth URL
 export const generateGoogleAuthUrl = (): string => {
+  // Ensure we're on the client side
+  if (typeof window === 'undefined') {
+    throw new Error('generateGoogleAuthUrl can only be called on the client side')
+  }
+
   const params = new URLSearchParams({
     client_id: GOOGLE_OAUTH_CONFIG.clientId,
     redirect_uri: GOOGLE_OAUTH_CONFIG.redirectUri,
