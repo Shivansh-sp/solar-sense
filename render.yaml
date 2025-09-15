@@ -1,0 +1,67 @@
+# Render deployment configuration for SolarSense
+services:
+  # Backend Service
+  - type: web
+    name: solarsense-backend
+    env: node
+    plan: free
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 5000
+      - key: MONGODB_URI
+        value: mongodb+srv://shivanshpushkarna_db_user:CFM6tSoP5vd1mhBE@cluster0.x6fhvdz.mongodb.net/solarsense?retryWrites=true&w=majority&appName=Cluster0
+      - key: JWT_SECRET
+        value: solarsense_2024_secure_jwt_secret_key_8f7e6d5c4b3a2918
+      - key: JWT_EXPIRE
+        value: 7d
+      - key: CORS_ORIGIN
+        value: https://solar-sense-final.onrender.com,https://solar-sense-backend.onrender.com
+      - key: API_VERSION
+        value: v1
+      - key: BCRYPT_ROUNDS
+        value: 12
+      - key: RATE_LIMIT_WINDOW_MS
+        value: 900000
+      - key: RATE_LIMIT_MAX_REQUESTS
+        value: 100
+      - key: WEATHER_API_KEY
+        value: demo-weather-api-key
+      - key: MQTT_BROKER_URL
+        value: mqtt://localhost:1883
+      - key: MQTT_TOPIC_PREFIX
+        value: solarsense
+      - key: STRIPE_SECRET_KEY
+        value: sk_test_51Q8x9y2z3a4b5c6d7e8f9g0h1i2j3k4l5m6n7o8p9q0r1s2t3u4v5w6x7y8z9
+      - key: STRIPE_PUBLISHABLE_KEY
+        value: pk_test_51Q8x9y2z3a4b5c6d7e8f9g0h1i2j3k4l5m6n7o8p9q0r1s2t3u4v5w6x7y8z9
+      - key: STRIPE_WEBHOOK_SECRET
+        value: whsec_1234567890abcdef1234567890abcdef12345678
+
+  # Frontend Service
+  - type: web
+    name: solarsense-frontend
+    env: node
+    plan: free
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3000
+      - key: NEXT_PUBLIC_API_URL
+        value: https://solar-sense-backend.onrender.com/api
+      - key: NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+        value: pk_test_51Q8x9y2z3a4b5c6d7e8f9g0h1i2j3k4l5m6n7o8p9q0r1s2t3u4v5w6x7y8z9
+      - key: NEXT_PUBLIC_GOOGLE_CLIENT_ID
+        value: your-google-client-id
+      - key: NEXT_PUBLIC_GOOGLE_CLIENT_SECRET
+        value: your-google-client-secret
+      - key: NEXT_PUBLIC_GOOGLE_REDIRECT_URI
+        value: https://solar-sense-final.onrender.com/auth/google/callback

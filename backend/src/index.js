@@ -8,6 +8,9 @@ const { createServer } = require('http');
 const { Server } = require('socket.io');
 require('dotenv').config({ path: './env' });
 
+// Import logger
+const { logger, createLogger } = require('./utils/logger');
+
 const connectDB = require('./config/database');
 const errorHandler = require('./middleware/errorHandler');
 const initializeDatabase = require('./utils/initDatabase');
@@ -30,6 +33,17 @@ const SimulationService = require('./services/SimulationService');
 
 const app = express();
 const server = createServer(app);
+
+// Log startup
+logger.system('APP', 'Starting SolarSense Backend Server');
+logger.info('Environment Variables Check', {
+  NODE_ENV: process.env.NODE_ENV,
+  PORT: process.env.PORT,
+  MONGODB_URI: process.env.MONGODB_URI ? 'Set' : 'Not Set',
+  JWT_SECRET: process.env.JWT_SECRET ? 'Set' : 'Not Set',
+  CORS_ORIGIN: process.env.CORS_ORIGIN
+});
+
 const io = new Server(server, {
   cors: {
     origin: [
@@ -41,12 +55,20 @@ const io = new Server(server, {
   }
 });
 
+logger.info('WebSocket Server initialized', {
+  corsOrigins: [
+    process.env.CORS_ORIGIN || "https://solar-sense-frontend.vercel.app",
+    "https://solar-sense-final.onrender.com",
+    "http://localhost:3000"
+  ]
+});
+
 // Connect to MongoDB
-// Note: connectDB is async but we don't await it here
-// The server will start even if DB connection fails
+logger.system('DATABASE', 'Attempting to connect to MongoDB');
 connectDB();
 
 // Security middleware
+logger.system('MIDDLEWARE', 'Setting up security middleware');
 app.use(helmet());
 app.use(compression());
 
@@ -56,37 +78,59 @@ const limiter = rateLimit({
   max: parseInt(process.env.RATE_LIMIT_MAX_REQUESTS) || 100 // limit each IP to 100 requests per windowMs
 });
 app.use('/api/', limiter);
+logger.system('RATE_LIMIT', 'Rate limiting configured', {
+  windowMs: parseInt(process.env.RATE_LIMIT_WINDOW_MS) || 15 * 60 * 1000,
+  maxRequests: parseInt(process.env.RATE_LIMIT_MAX_REQUESTS) || 100
+});
 
 // CORS configuration
+const corsOrigins = [
+  process.env.CORS_ORIGIN || "https://solar-sense-frontend.vercel.app",
+  "https://solar-sense-final.onrender.com",
+  "http://localhost:3000"
+];
+
 app.use(cors({
-  origin: [
-    process.env.CORS_ORIGIN || "https://solar-sense-frontend.vercel.app",
-    "https://solar-sense-final.onrender.com",
-    "http://localhost:3000"
-  ],
+  origin: corsOrigins,
   credentials: true
 }));
+
+logger.system('CORS', 'CORS configured', {
+  origins: corsOrigins,
+  credentials: true
+});
 
 // Body parsing middleware
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+logger.system('MIDDLEWARE', 'Body parsing middleware configured');
 
-// Logging
+// Request logging middleware
+app.use(logger.request.bind(logger));
+
+// Morgan logging
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
+  logger.system('LOGGING', 'Morgan dev logging enabled');
 }
 
 // Health check endpoint
 app.get('/health', (req, res) => {
-  res.status(200).json({
+  const healthData = {
     status: 'OK',
     timestamp: new Date().toISOString(),
     uptime: process.uptime(),
-    environment: process.env.NODE_ENV
-  });
+    environment: process.env.NODE_ENV,
+    version: '1.0.0',
+    memory: process.memoryUsage()
+  };
+  
+  logger.debug('Health check requested', healthData);
+  res.status(200).json(healthData);
 });
 
 // API routes
+logger.system('ROUTES', 'Setting up API routes');
 app.use('/api/auth', authRoutes);
 app.use('/api/energy', energyRoutes);
 app.use('/api/market', marketRoutes);
@@ -95,21 +139,22 @@ app.use('/api/device', deviceRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 app.use('/api/debug', debugRoutes);
 app.use('/api/test', testRoutes);
+logger.success('All API routes configured');
 
 // WebSocket connection handling
 io.on('connection', (socket) => {
-  console.log(`Client connected: ${socket.id}`);
+  logger.info(`WebSocket client connected: ${socket.id}`);
   
   // Join energy trading room
   socket.on('join-trading', (data) => {
     socket.join(`trading-${data.householdId}`);
-    console.log(`Client ${socket.id} joined trading room for household ${data.householdId}`);
+    logger.info(`WebSocket client ${socket.id} joined trading room for household ${data.householdId}`);
   });
   
   // Join grid monitoring room
   socket.on('join-grid', () => {
     socket.join('grid-monitoring');
-    console.log(`Client ${socket.id} joined grid monitoring`);
+    logger.info(`WebSocket client ${socket.id} joined grid monitoring`);
   });
   
   // Handle energy trade requests
@@ -134,7 +179,7 @@ io.on('connection', (socket) => {
   });
   
   socket.on('disconnect', () => {
-    console.log(`Client disconnected: ${socket.id}`);
+    logger.info(`WebSocket client disconnected: ${socket.id}`);
   });
 });
 
@@ -155,26 +200,36 @@ app.use('*', (req, res) => {
 // Initialize services
 const initializeServices = async () => {
   try {
+    logger.system('SERVICES', 'Initializing all services');
+    
     await MLService.initialize();
+    logger.success('ML Service initialized');
+    
     await MarketEngine.initialize();
+    logger.success('Market Engine initialized');
+    
     await WeatherService.initialize();
+    logger.success('Weather Service initialized');
+    
     await SimulationService.initialize();
+    logger.success('Simulation Service initialized');
     
     // Initialize database with sample data
     await initializeDatabase();
+    logger.success('Database initialization completed');
     
-    console.log('All services initialized successfully');
+    logger.success('All services initialized successfully');
   } catch (error) {
-    console.error('Error initializing services:', error);
+    logger.error('Error initializing services', error);
   }
 };
 
 const PORT = process.env.PORT || 5000;
 
 server.listen(PORT, () => {
-  console.log(`🚀 SolarSense Backend running on port ${PORT}`);
-  console.log(`📊 Environment: ${process.env.NODE_ENV}`);
-  console.log(`🔗 CORS enabled for: ${process.env.CORS_ORIGIN || "https://solar-sense-frontend.vercel.app"}`);
+  logger.success(`SolarSense Backend running on port ${PORT}`);
+  logger.info(`Environment: ${process.env.NODE_ENV}`);
+  logger.info(`CORS enabled for: ${process.env.CORS_ORIGIN || "https://solar-sense-frontend.vercel.app"}`);
   
   // Initialize services after server starts
   initializeServices();
@@ -182,9 +237,16 @@ server.listen(PORT, () => {
 
 // Graceful shutdown
 process.on('SIGTERM', () => {
-  console.log('SIGTERM received, shutting down gracefully');
+  logger.warning('SIGTERM received, shutting down gracefully');
   server.close(() => {
-    console.log('Process terminated');
+    logger.info('Process terminated');
+  });
+});
+
+process.on('SIGINT', () => {
+  logger.warning('SIGINT received, shutting down gracefully');
+  server.close(() => {
+    logger.info('Process terminated');
   });
 });
 

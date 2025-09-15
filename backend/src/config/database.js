@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { logger } = require('../utils/logger');
 
 const connectDB = async () => {
   try {
@@ -14,32 +15,36 @@ const connectDB = async () => {
 
     const conn = await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/solarsense', options);
 
-    console.log(`📊 MongoDB Connected: ${conn.connection.host}`);
+    logger.success(`MongoDB Connected: ${conn.connection.host}`);
+    logger.info(`Database: ${conn.connection.name}`);
     
     // Handle connection events
     mongoose.connection.on('error', (err) => {
-      console.error('MongoDB connection error:', err);
+      logger.error('MongoDB connection error', err);
     });
 
     mongoose.connection.on('disconnected', () => {
-      console.log('MongoDB disconnected');
+      logger.warning('MongoDB disconnected');
     });
 
     // Graceful shutdown
     process.on('SIGINT', async () => {
       await mongoose.connection.close();
-      console.log('MongoDB connection closed through app termination');
+      logger.info('MongoDB connection closed through app termination');
       process.exit(0);
     });
 
   } catch (error) {
-    console.error('Database connection failed:', error.message);
-    console.error('Full error:', error);
+    logger.error('Database connection failed', {
+      message: error.message,
+      code: error.code,
+      name: error.name
+    });
     
     // Don't exit immediately, let the app try to continue
     // The app can still serve some functionality without DB
-    console.log('⚠️ Continuing without database connection...');
-    console.log('⚠️ Some features may not work properly without database access');
+    logger.warning('Continuing without database connection...');
+    logger.warning('Some features may not work properly without database access');
     
     // Set a flag to indicate database is not available
     global.databaseAvailable = false;

@@ -3,7 +3,10 @@ const jwt = require('jsonwebtoken');
 const { body, validationResult } = require('express-validator');
 const { auth } = require('../middleware/auth');
 const { checkDatabase } = require('../middleware/dbCheck');
+const { createLogger } = require('../utils/logger');
 const User = require('../models/User');
+
+const logger = createLogger('AUTH');
 
 const router = express.Router();
 
@@ -16,8 +19,11 @@ router.post('/register', [
   body('name').notEmpty().trim()
 ], checkDatabase, async (req, res) => {
   try {
+    logger.info('Registration attempt', { email: req.body.email, name: req.body.name });
+    
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
+      logger.warning('Registration validation failed', errors.array());
       return res.status(400).json({
         success: false,
         message: 'Validation errors',
@@ -30,6 +36,7 @@ router.post('/register', [
     // Check if user already exists
     const existingUser = await User.findOne({ email });
     if (existingUser) {
+      logger.warning('Registration failed - user already exists', { email });
       return res.status(400).json({
         success: false,
         message: 'User already exists'
@@ -37,6 +44,7 @@ router.post('/register', [
     }
 
     // Create user
+    logger.info('Creating new user', { email, role });
     const newUser = await User.create({
       email,
       password,
@@ -58,6 +66,12 @@ router.post('/register', [
       expiresIn: process.env.JWT_EXPIRE || '7d'
     });
 
+    logger.success('User registered successfully', { 
+      id: newUser._id, 
+      email: newUser.email, 
+      role: newUser.role 
+    });
+
     res.status(201).json({
       success: true,
       message: 'User registered successfully',
@@ -72,7 +86,11 @@ router.post('/register', [
     });
 
   } catch (error) {
-    console.error('Registration error:', error);
+    logger.error('Registration error', {
+      message: error.message,
+      stack: error.stack,
+      email: req.body.email
+    });
     res.status(500).json({
       success: false,
       message: 'Server error during registration'
