@@ -1,184 +1,252 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { 
   SunIcon, 
   ChartBarIcon, 
-  ClockIcon, 
-  ArrowLeftIcon,
-  CheckCircleIcon,
-  ExclamationTriangleIcon
+  CurrencyRupeeIcon,
+  ArrowTrendingUpIcon,
+  CalendarIcon,
+  CloudIcon
 } from '@heroicons/react/24/outline';
-import Link from 'next/link';
 
-const features = [
-  {
-    icon: SunIcon,
-    title: 'Weather Integration',
-    description: 'Real-time weather data from multiple sources for accurate predictions',
-    color: 'bg-gradient-to-r from-yellow-400 to-orange-500'
-  },
-  {
-    icon: ChartBarIcon,
-    title: 'Machine Learning Models',
-    description: 'Advanced AI algorithms trained on historical solar data',
-    color: 'bg-gradient-to-r from-blue-500 to-purple-600'
-  },
-  {
-    icon: ClockIcon,
-    title: 'Real-time Updates',
-    description: 'Continuous monitoring and prediction updates every 15 minutes',
-    color: 'bg-gradient-to-r from-green-400 to-emerald-500'
+interface ForecastData {
+  date: string;
+  solarGeneration: number;
+  revenue: number;
+  weather: string;
+  efficiency: number;
+}
+
+interface RevenueData {
+  totalRevenue: number;
+  dailyAverage: number;
+  monthlyProjection: number;
+  yearlyProjection: number;
+  growthRate: number;
+}
+
+export default function SolarForecastingPage() {
+  const [forecastData, setForecastData] = useState<ForecastData[]>([]);
+  const [revenueData, setRevenueData] = useState<RevenueData>({
+    totalRevenue: 0,
+    dailyAverage: 0,
+    monthlyProjection: 0,
+    yearlyProjection: 0,
+    growthRate: 0
+  });
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Simulate API call
+    const mockData: ForecastData[] = [
+      { date: '2024-01-15', solarGeneration: 45.2, revenue: 271.2, weather: 'Sunny', efficiency: 0.92 },
+      { date: '2024-01-16', solarGeneration: 38.7, revenue: 232.2, weather: 'Partly Cloudy', efficiency: 0.88 },
+      { date: '2024-01-17', solarGeneration: 52.1, revenue: 312.6, weather: 'Sunny', efficiency: 0.94 },
+      { date: '2024-01-18', solarGeneration: 41.3, revenue: 247.8, weather: 'Cloudy', efficiency: 0.85 },
+      { date: '2024-01-19', solarGeneration: 48.9, revenue: 293.4, weather: 'Sunny', efficiency: 0.91 },
+      { date: '2024-01-20', solarGeneration: 44.6, revenue: 267.6, weather: 'Partly Cloudy', efficiency: 0.89 },
+      { date: '2024-01-21', solarGeneration: 50.3, revenue: 301.8, weather: 'Sunny', efficiency: 0.93 }
+    ];
+
+    const mockRevenue: RevenueData = {
+      totalRevenue: 1926.6,
+      dailyAverage: 274.8,
+      monthlyProjection: 8244,
+      yearlyProjection: 100328,
+      growthRate: 12.5
+    };
+
+    setTimeout(() => {
+      setForecastData(mockData);
+      setRevenueData(mockRevenue);
+      setLoading(false);
+    }, 1000);
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600 mx-auto"></div>
+          <p className="mt-4 text-lg text-gray-600">Loading forecasting data...</p>
+        </div>
+      </div>
+    );
   }
-];
 
-const benefits = [
-  '95% prediction accuracy',
-  '15-minute update intervals',
-  'Weather pattern analysis',
-  'Historical data integration',
-  'Peak generation forecasting',
-  'Cloud cover prediction'
-];
-
-export default function ForecastingPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900">
-      {/* Header */}
-      <div className="relative z-10 container mx-auto px-6 py-12">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+      <div className="container mx-auto px-4 py-8">
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-center mb-8"
+        >
+          <h1 className="text-4xl font-bold text-gray-900 mb-4">
+            Solar Forecasting & Revenue Dashboard
+          </h1>
+          <p className="text-xl text-gray-600">
+            Predict solar generation and optimize revenue with AI-powered forecasting
+          </p>
+        </motion.div>
+
+        {/* Revenue Overview Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.1 }}
+            className="bg-white rounded-xl shadow-lg p-6 border-l-4 border-green-500"
+          >
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600">Total Revenue</p>
+                <p className="text-2xl font-bold text-gray-900">
+                  ₹{revenueData.totalRevenue.toLocaleString()}
+                </p>
+              </div>
+              <CurrencyRupeeIcon className="h-8 w-8 text-green-500" />
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.2 }}
+            className="bg-white rounded-xl shadow-lg p-6 border-l-4 border-blue-500"
+          >
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600">Daily Average</p>
+                <p className="text-2xl font-bold text-gray-900">
+                  ₹{revenueData.dailyAverage.toLocaleString()}
+                </p>
+              </div>
+              <ChartBarIcon className="h-8 w-8 text-blue-500" />
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.3 }}
+            className="bg-white rounded-xl shadow-lg p-6 border-l-4 border-purple-500"
+          >
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600">Monthly Projection</p>
+                <p className="text-2xl font-bold text-gray-900">
+                  ₹{revenueData.monthlyProjection.toLocaleString()}
+                </p>
+              </div>
+              <CalendarIcon className="h-8 w-8 text-purple-500" />
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.4 }}
+            className="bg-white rounded-xl shadow-lg p-6 border-l-4 border-orange-500"
+          >
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600">Growth Rate</p>
+                <p className="text-2xl font-bold text-gray-900">
+                  +{revenueData.growthRate}%
+                </p>
+              </div>
+              <ArrowTrendingUpIcon className="h-8 w-8 text-orange-500" />
+            </div>
+          </motion.div>
+        </div>
+
+        {/* Forecasting Chart */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="mb-12"
+          transition={{ delay: 0.5 }}
+          className="bg-white rounded-xl shadow-lg p-6 mb-8"
         >
-          <Link href="/" className="inline-flex items-center text-white/70 hover:text-white transition-colors mb-8">
-            <ArrowLeftIcon className="w-5 h-5 mr-2" />
-            Back to Home
-          </Link>
-          
-          <div className="flex items-center space-x-4 mb-6">
-            <div className="w-16 h-16 rounded-2xl bg-gradient-to-r from-yellow-400 to-orange-500 flex items-center justify-center">
-              <SunIcon className="w-8 h-8 text-white" />
-            </div>
-            <div>
-              <h1 className="text-5xl font-bold text-white">Solar Forecasting</h1>
-              <p className="text-xl text-gray-300">AI-powered solar energy prediction</p>
-            </div>
+          <h2 className="text-2xl font-bold text-gray-900 mb-6">7-Day Solar Generation Forecast</h2>
+          <div className="space-y-4">
+            {forecastData.map((day, index) => (
+              <div key={index} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                <div className="flex items-center space-x-4">
+                  <div className="flex items-center space-x-2">
+                    <SunIcon className="h-5 w-5 text-yellow-500" />
+                    <span className="font-medium">{day.date}</span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <CloudIcon className="h-4 w-4 text-gray-500" />
+                    <span className="text-sm text-gray-600">{day.weather}</span>
+                  </div>
+                </div>
+                <div className="flex items-center space-x-6">
+                  <div className="text-center">
+                    <p className="text-sm text-gray-600">Generation</p>
+                    <p className="font-bold">{day.solarGeneration} kWh</p>
+                  </div>
+                  <div className="text-center">
+                    <p className="text-sm text-gray-600">Revenue</p>
+                    <p className="font-bold text-green-600">₹{day.revenue}</p>
+                  </div>
+                  <div className="text-center">
+                    <p className="text-sm text-gray-600">Efficiency</p>
+                    <p className="font-bold">{Math.round(day.efficiency * 100)}%</p>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         </motion.div>
 
-        {/* Main Content */}
-        <div className="grid lg:grid-cols-2 gap-16">
-          {/* Left Column - Features */}
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="space-y-8"
-          >
-            <div className="space-y-6">
-              <h2 className="text-3xl font-bold text-white">Advanced Prediction Technology</h2>
-              <p className="text-lg text-gray-300 leading-relaxed">
-                Our solar forecasting system uses cutting-edge machine learning algorithms 
-                combined with real-time weather data to provide highly accurate predictions 
-                of solar energy generation. This helps you optimize your energy usage and 
-                maximize your solar investment returns.
-              </p>
-            </div>
-
-            <div className="space-y-6">
-              {features.map((feature, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.3 + index * 0.1 }}
-                  className="p-6 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20"
-                >
-                  <div className="flex items-start space-x-4">
-                    <div className={`w-12 h-12 rounded-xl ${feature.color} flex items-center justify-center flex-shrink-0`}>
-                      {React.createElement(feature.icon, { className: "w-6 h-6 text-white" })}
-                    </div>
-                    <div>
-                      <h3 className="text-xl font-semibold text-white mb-2">{feature.title}</h3>
-                      <p className="text-gray-300">{feature.description}</p>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
-
-          {/* Right Column - Benefits & Demo */}
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className="space-y-8"
-          >
-            {/* Benefits List */}
-            <div className="p-8 rounded-3xl bg-white/10 backdrop-blur-md border border-white/20">
-              <h3 className="text-2xl font-bold text-white mb-6">Key Benefits</h3>
-              <div className="space-y-4">
-                {benefits.map((benefit, index) => (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.5, delay: 0.5 + index * 0.1 }}
-                    className="flex items-center space-x-3"
-                  >
-                    <CheckCircleIcon className="w-6 h-6 text-green-400 flex-shrink-0" />
-                    <span className="text-gray-300">{benefit}</span>
-                  </motion.div>
-                ))}
+        {/* Revenue Optimization Tips */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6 }}
+          className="bg-white rounded-xl shadow-lg p-6"
+        >
+          <h2 className="text-2xl font-bold text-gray-900 mb-6">Revenue Optimization Tips</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-4">
+              <div className="flex items-start space-x-3">
+                <div className="w-2 h-2 bg-green-500 rounded-full mt-2"></div>
+                <div>
+                  <h3 className="font-semibold text-gray-900">Peak Hour Optimization</h3>
+                  <p className="text-gray-600">Sell energy during peak hours (10 AM - 4 PM) for maximum revenue</p>
+                </div>
               </div>
-            </div>
-
-            {/* Demo Card */}
-            <div className="p-8 rounded-3xl bg-white/10 backdrop-blur-md border border-white/20">
-              <h3 className="text-2xl font-bold text-white mb-6">Live Prediction Demo</h3>
-              <div className="space-y-6">
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="text-center p-4 rounded-xl bg-green-500/20">
-                    <div className="text-2xl font-bold text-green-400">8.5 kW</div>
-                    <div className="text-sm text-gray-300">Current Generation</div>
-                  </div>
-                  <div className="text-center p-4 rounded-xl bg-blue-500/20">
-                    <div className="text-2xl font-bold text-blue-400">9.2 kW</div>
-                    <div className="text-sm text-gray-300">Predicted Peak</div>
-                  </div>
-                </div>
-                
-                <div className="space-y-3">
-                  <div className="flex justify-between text-sm">
-                    <span className="text-gray-300">Accuracy</span>
-                    <span className="text-green-400 font-semibold">95.2%</span>
-                  </div>
-                  <div className="w-full bg-gray-700 rounded-full h-2">
-                    <div className="bg-gradient-to-r from-green-400 to-blue-400 h-2 rounded-full" style={{ width: '95.2%' }}></div>
-                  </div>
-                </div>
-
-                <div className="pt-4">
-                  <div className="flex items-center space-x-2 text-yellow-400">
-                    <ExclamationTriangleIcon className="w-5 h-5" />
-                    <span className="text-sm">Next update in 12 minutes</span>
-                  </div>
+              <div className="flex items-start space-x-3">
+                <div className="w-2 h-2 bg-blue-500 rounded-full mt-2"></div>
+                <div>
+                  <h3 className="font-semibold text-gray-900">Weather-Based Pricing</h3>
+                  <p className="text-gray-600">Adjust pricing based on weather forecasts and demand patterns</p>
                 </div>
               </div>
             </div>
-
-            {/* CTA Button */}
-            <Link href="/dashboard">
-              <button className="w-full px-8 py-4 bg-gradient-to-r from-green-500 to-blue-500 text-white font-semibold rounded-2xl hover:from-green-600 hover:to-blue-600 transition-all duration-300 transform hover:scale-105 shadow-xl">
-                Try Solar Forecasting
-              </button>
-            </Link>
-          </motion.div>
-        </div>
+            <div className="space-y-4">
+              <div className="flex items-start space-x-3">
+                <div className="w-2 h-2 bg-purple-500 rounded-full mt-2"></div>
+                <div>
+                  <h3 className="font-semibold text-gray-900">Battery Storage</h3>
+                  <p className="text-gray-600">Store excess energy and sell during high-demand periods</p>
+                </div>
+              </div>
+              <div className="flex items-start space-x-3">
+                <div className="w-2 h-2 bg-orange-500 rounded-full mt-2"></div>
+                <div>
+                  <h3 className="font-semibold text-gray-900">Maintenance Schedule</h3>
+                  <p className="text-gray-600">Regular cleaning and maintenance to maintain optimal efficiency</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </motion.div>
       </div>
     </div>
   );

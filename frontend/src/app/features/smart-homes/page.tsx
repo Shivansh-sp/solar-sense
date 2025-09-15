@@ -1,158 +1,358 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { 
   HomeIcon, 
-  LightBulbIcon,
-  ArrowLeftIcon,
-  CheckCircleIcon,
-  DevicePhoneMobileIcon
+  SunIcon,
+  BoltIcon,
+  ChartBarIcon,
+  CloudIcon,
+  WrenchScrewdriverIcon,
+  ExclamationTriangleIcon,
+  CheckCircleIcon
 } from '@heroicons/react/24/outline';
-import Link from 'next/link';
 
-const features = [
-  {
-    icon: HomeIcon,
-    title: 'Smart Home Integration',
-    description: 'Connect and control all your home energy devices',
-    color: 'from-indigo-500 to-blue-600'
-  },
-  {
-    icon: LightBulbIcon,
-    title: 'Automated Controls',
-    description: 'Intelligent energy management and device automation',
-    color: 'from-yellow-400 to-orange-500'
-  },
-  {
-    icon: DevicePhoneMobileIcon,
-    title: 'Mobile Control',
-    description: 'Manage your home energy from anywhere with our app',
-    color: 'from-green-400 to-emerald-500'
-  }
-];
+interface SolarPanel {
+  id: string;
+  name: string;
+  wattage: number;
+  efficiency: number;
+  health: 'excellent' | 'good' | 'fair' | 'poor';
+  lastMaintenance: string;
+  nextMaintenance: string;
+  dailyGeneration: number;
+  totalGeneration: number;
+}
 
-const benefits = [
-  'Smart home device integration',
-  'Automated energy management',
-  'Mobile app control',
-  'Energy usage optimization',
-  'Device scheduling and automation',
-  'Real-time monitoring and alerts'
-];
+interface WeatherData {
+  temperature: number;
+  humidity: number;
+  cloudCover: number;
+  uvIndex: number;
+  windSpeed: number;
+  condition: string;
+}
+
+interface HomeData {
+  totalPanels: number;
+  totalWattage: number;
+  dailyGeneration: number;
+  monthlyGeneration: number;
+  efficiency: number;
+  healthScore: number;
+}
 
 export default function SmartHomesPage() {
+  const [panels, setPanels] = useState<SolarPanel[]>([]);
+  const [weather, setWeather] = useState<WeatherData>({
+    temperature: 0,
+    humidity: 0,
+    cloudCover: 0,
+    uvIndex: 0,
+    windSpeed: 0,
+    condition: ''
+  });
+  const [homeData, setHomeData] = useState<HomeData>({
+    totalPanels: 0,
+    totalWattage: 0,
+    dailyGeneration: 0,
+    monthlyGeneration: 0,
+    efficiency: 0,
+    healthScore: 0
+  });
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Simulate API call
+    const mockPanels: SolarPanel[] = [
+      {
+        id: '1',
+        name: 'Main Array - South',
+        wattage: 5000,
+        efficiency: 94.2,
+        health: 'excellent',
+        lastMaintenance: '2024-01-01',
+        nextMaintenance: '2024-04-01',
+        dailyGeneration: 42.5,
+        totalGeneration: 12500
+      },
+      {
+        id: '2',
+        name: 'Secondary Array - East',
+        wattage: 3000,
+        efficiency: 91.8,
+        health: 'good',
+        lastMaintenance: '2024-01-15',
+        nextMaintenance: '2024-04-15',
+        dailyGeneration: 25.3,
+        totalGeneration: 7500
+      },
+      {
+        id: '3',
+        name: 'West Array',
+        wattage: 2000,
+        efficiency: 88.5,
+        health: 'fair',
+        lastMaintenance: '2023-12-01',
+        nextMaintenance: '2024-03-01',
+        dailyGeneration: 16.8,
+        totalGeneration: 4800
+      }
+    ];
+
+    const mockWeather: WeatherData = {
+      temperature: 28,
+      humidity: 65,
+      cloudCover: 20,
+      uvIndex: 8,
+      windSpeed: 12,
+      condition: 'Sunny'
+    };
+
+    const mockHomeData: HomeData = {
+      totalPanels: 3,
+      totalWattage: 10000,
+      dailyGeneration: 84.6,
+      monthlyGeneration: 2538,
+      efficiency: 91.5,
+      healthScore: 88
+    };
+
+    setTimeout(() => {
+      setPanels(mockPanels);
+      setWeather(mockWeather);
+      setHomeData(mockHomeData);
+      setLoading(false);
+    }, 1000);
+  }, []);
+
+  const getHealthColor = (health: string) => {
+    switch (health) {
+      case 'excellent': return 'text-green-600 bg-green-100';
+      case 'good': return 'text-blue-600 bg-blue-100';
+      case 'fair': return 'text-yellow-600 bg-yellow-100';
+      case 'poor': return 'text-red-600 bg-red-100';
+      default: return 'text-gray-600 bg-gray-100';
+    }
+  };
+
+  const getHealthIcon = (health: string) => {
+    switch (health) {
+      case 'excellent': return CheckCircleIcon;
+      case 'good': return CheckCircleIcon;
+      case 'fair': return ExclamationTriangleIcon;
+      case 'poor': return ExclamationTriangleIcon;
+      default: return ExclamationTriangleIcon;
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600 mx-auto"></div>
+          <p className="mt-4 text-lg text-gray-600">Loading home dashboard...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900">
-      <div className="relative z-10 container mx-auto px-6 py-12">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+      <div className="container mx-auto px-4 py-8">
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-center mb-8"
+        >
+          <h1 className="text-4xl font-bold text-gray-900 mb-4">
+            Smart Homes Dashboard
+          </h1>
+          <p className="text-xl text-gray-600">
+            Monitor your solar panel health, generation, and home energy management
+          </p>
+        </motion.div>
+
+        {/* Overview Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.1 }}
+            className="bg-white rounded-xl shadow-lg p-6 border-l-4 border-blue-500"
+          >
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600">Total Panels</p>
+                <p className="text-2xl font-bold text-gray-900">{homeData.totalPanels}</p>
+                <p className="text-sm text-gray-500">{homeData.totalWattage}W total</p>
+              </div>
+              <HomeIcon className="h-8 w-8 text-blue-500" />
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.2 }}
+            className="bg-white rounded-xl shadow-lg p-6 border-l-4 border-green-500"
+          >
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600">Daily Generation</p>
+                <p className="text-2xl font-bold text-gray-900">{homeData.dailyGeneration} kWh</p>
+                <p className="text-sm text-green-600">+5.2% vs yesterday</p>
+              </div>
+              <SunIcon className="h-8 w-8 text-green-500" />
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.3 }}
+            className="bg-white rounded-xl shadow-lg p-6 border-l-4 border-purple-500"
+          >
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600">Efficiency</p>
+                <p className="text-2xl font-bold text-gray-900">{homeData.efficiency}%</p>
+                <p className="text-sm text-purple-600">System average</p>
+              </div>
+              <ChartBarIcon className="h-8 w-8 text-purple-500" />
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.4 }}
+            className="bg-white rounded-xl shadow-lg p-6 border-l-4 border-orange-500"
+          >
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600">Health Score</p>
+                <p className="text-2xl font-bold text-gray-900">{homeData.healthScore}/100</p>
+                <p className="text-sm text-orange-600">Overall system</p>
+              </div>
+              <BoltIcon className="h-8 w-8 text-orange-500" />
+            </div>
+          </motion.div>
+        </div>
+
+        {/* Weather Information */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="mb-12"
+          transition={{ delay: 0.5 }}
+          className="bg-white rounded-xl shadow-lg p-6 mb-8"
         >
-          <Link href="/" className="inline-flex items-center text-white/70 hover:text-white transition-colors mb-8">
-            <ArrowLeftIcon className="w-5 h-5 mr-2" />
-            Back to Home
-          </Link>
-          
-          <div className="flex items-center space-x-4 mb-6">
-            <div className="w-16 h-16 rounded-2xl bg-gradient-to-r from-indigo-500 to-blue-600 flex items-center justify-center">
-              <HomeIcon className="w-8 h-8 text-white" />
+          <h2 className="text-2xl font-bold text-gray-900 mb-6">Current Weather Conditions</h2>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+            <div className="text-center p-4 bg-blue-50 rounded-lg">
+              <CloudIcon className="h-8 w-8 text-blue-500 mx-auto mb-2" />
+              <p className="text-sm text-gray-600">Temperature</p>
+              <p className="text-xl font-bold text-gray-900">{weather.temperature}°C</p>
             </div>
-            <div>
-              <h1 className="text-5xl font-bold text-white">Smart Homes</h1>
-              <p className="text-xl text-gray-300">Intelligent energy management for households</p>
+            <div className="text-center p-4 bg-green-50 rounded-lg">
+              <SunIcon className="h-8 w-8 text-green-500 mx-auto mb-2" />
+              <p className="text-sm text-gray-600">UV Index</p>
+              <p className="text-xl font-bold text-gray-900">{weather.uvIndex}</p>
+            </div>
+            <div className="text-center p-4 bg-purple-50 rounded-lg">
+              <CloudIcon className="h-8 w-8 text-purple-500 mx-auto mb-2" />
+              <p className="text-sm text-gray-600">Humidity</p>
+              <p className="text-xl font-bold text-gray-900">{weather.humidity}%</p>
+            </div>
+            <div className="text-center p-4 bg-yellow-50 rounded-lg">
+              <CloudIcon className="h-8 w-8 text-yellow-500 mx-auto mb-2" />
+              <p className="text-sm text-gray-600">Cloud Cover</p>
+              <p className="text-xl font-bold text-gray-900">{weather.cloudCover}%</p>
+            </div>
+            <div className="text-center p-4 bg-orange-50 rounded-lg">
+              <BoltIcon className="h-8 w-8 text-orange-500 mx-auto mb-2" />
+              <p className="text-sm text-gray-600">Wind Speed</p>
+              <p className="text-xl font-bold text-gray-900">{weather.windSpeed} km/h</p>
+            </div>
+            <div className="text-center p-4 bg-indigo-50 rounded-lg">
+              <SunIcon className="h-8 w-8 text-indigo-500 mx-auto mb-2" />
+              <p className="text-sm text-gray-600">Condition</p>
+              <p className="text-lg font-bold text-gray-900">{weather.condition}</p>
             </div>
           </div>
         </motion.div>
 
-        <div className="grid lg:grid-cols-2 gap-16">
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="space-y-8"
-          >
-            <div className="space-y-6">
-              <h2 className="text-3xl font-bold text-white">Intelligent Home Energy Management</h2>
-              <p className="text-lg text-gray-300 leading-relaxed">
-                Transform your home into a smart energy ecosystem with our comprehensive 
-                home automation platform. Control devices, optimize energy usage, and 
-                enjoy seamless integration with your solar system.
-              </p>
-            </div>
-
-            <div className="space-y-6">
-              {features.map((feature, index) => (
+        {/* Solar Panel Details */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6 }}
+          className="bg-white rounded-xl shadow-lg p-6"
+        >
+          <h2 className="text-2xl font-bold text-gray-900 mb-6">Solar Panel Health & Performance</h2>
+          <div className="space-y-6">
+            {panels.map((panel, index) => {
+              const HealthIcon = getHealthIcon(panel.health);
+              const healthColor = getHealthColor(panel.health);
+              
+              return (
                 <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.3 + index * 0.1 }}
-                  className="p-6 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20"
+                  key={panel.id}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.1 * index }}
+                  className="border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow"
                 >
-                  <div className="flex items-start space-x-4">
-                    <div className={`w-12 h-12 rounded-xl bg-gradient-to-r ${feature.color} flex items-center justify-center flex-shrink-0`}>
-                      {React.createElement(feature.icon, { className: "w-6 h-6 text-white" })}
-                    </div>
+                  <div className="flex items-center justify-between mb-4">
                     <div>
-                      <h3 className="text-xl font-semibold text-white mb-2">{feature.title}</h3>
-                      <p className="text-gray-300">{feature.description}</p>
+                      <h3 className="text-lg font-bold text-gray-900">{panel.name}</h3>
+                      <p className="text-sm text-gray-600">{panel.wattage}W capacity</p>
                     </div>
+                    <div className={`px-3 py-1 rounded-full text-sm font-medium ${healthColor}`}>
+                      <div className="flex items-center space-x-1">
+                        <HealthIcon className="h-4 w-4" />
+                        <span className="capitalize">{panel.health}</span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div className="text-center">
+                      <p className="text-sm text-gray-600">Efficiency</p>
+                      <p className="text-xl font-bold text-gray-900">{panel.efficiency}%</p>
+                    </div>
+                    <div className="text-center">
+                      <p className="text-sm text-gray-600">Daily Generation</p>
+                      <p className="text-xl font-bold text-green-600">{panel.dailyGeneration} kWh</p>
+                    </div>
+                    <div className="text-center">
+                      <p className="text-sm text-gray-600">Total Generation</p>
+                      <p className="text-xl font-bold text-blue-600">{panel.totalGeneration} kWh</p>
+                    </div>
+                    <div className="text-center">
+                      <p className="text-sm text-gray-600">Next Maintenance</p>
+                      <p className="text-sm font-bold text-orange-600">{panel.nextMaintenance}</p>
+                    </div>
+                  </div>
+                  
+                  <div className="mt-4 flex items-center justify-between">
+                    <div className="flex items-center space-x-2">
+                      <WrenchScrewdriverIcon className="h-4 w-4 text-gray-500" />
+                      <span className="text-sm text-gray-600">
+                        Last maintenance: {panel.lastMaintenance}
+                      </span>
+                    </div>
+                    <button className="text-blue-600 hover:text-blue-800 text-sm font-medium">
+                      View Details →
+                    </button>
                   </div>
                 </motion.div>
-              ))}
-            </div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className="space-y-8"
-          >
-            <div className="p-8 rounded-3xl bg-white/10 backdrop-blur-md border border-white/20">
-              <h3 className="text-2xl font-bold text-white mb-6">Key Benefits</h3>
-              <div className="space-y-4">
-                {benefits.map((benefit, index) => (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.5, delay: 0.5 + index * 0.1 }}
-                    className="flex items-center space-x-3"
-                  >
-                    <CheckCircleIcon className="w-6 h-6 text-green-400 flex-shrink-0" />
-                    <span className="text-gray-300">{benefit}</span>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-
-            <div className="p-8 rounded-3xl bg-white/10 backdrop-blur-md border border-white/20">
-              <h3 className="text-2xl font-bold text-white mb-6">Smart Home Dashboard</h3>
-              <div className="space-y-6">
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="text-center p-4 rounded-xl bg-green-500/20">
-                    <div className="text-2xl font-bold text-green-400">12</div>
-                    <div className="text-sm text-gray-300">Connected Devices</div>
-                  </div>
-                  <div className="text-center p-4 rounded-xl bg-blue-500/20">
-                    <div className="text-2xl font-bold text-blue-400">85%</div>
-                    <div className="text-sm text-gray-300">Energy Efficiency</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <Link href="/dashboard">
-              <button className="w-full px-8 py-4 bg-gradient-to-r from-indigo-500 to-blue-600 text-white font-semibold rounded-2xl hover:from-indigo-600 hover:to-blue-700 transition-all duration-300 transform hover:scale-105 shadow-xl">
-                Setup Smart Home
-              </button>
-            </Link>
-          </motion.div>
-        </div>
+              );
+            })}
+          </div>
+        </motion.div>
       </div>
     </div>
   );

@@ -1,213 +1,308 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { 
   ChartBarIcon, 
-  ChartPieIcon, 
-  ClockIcon,
-  ArrowLeftIcon,
-  CheckCircleIcon,
-  ArrowTrendingUpIcon
+  CurrencyRupeeIcon,
+  WrenchScrewdriverIcon,
+  BoltIcon,
+  TrendingUpIcon,
+  TrendingDownIcon
 } from '@heroicons/react/24/outline';
-import Link from 'next/link';
 
-const features = [
-  {
-    icon: ChartBarIcon,
-    title: 'Real-time Monitoring',
-    description: 'Live energy consumption and production tracking',
-    color: 'from-green-400 to-emerald-500'
-  },
-  {
-    icon: ChartPieIcon,
-    title: 'Detailed Analytics',
-    description: 'Comprehensive insights into your energy patterns',
-    color: 'from-blue-500 to-purple-600'
-  },
-  {
-    icon: ArrowTrendingUpIcon,
-    title: 'Performance Trends',
-    description: 'Historical data analysis and future predictions',
-    color: 'from-pink-500 to-rose-500'
-  }
-];
-
-const benefits = [
-  'Real-time energy monitoring',
-  'Detailed consumption analytics',
-  'Performance trend analysis',
-  'Cost optimization insights',
-  'Efficiency recommendations',
-  'Custom reporting dashboard'
-];
+interface AnalyticsData {
+  energySold: {
+    total: number;
+    daily: number;
+    monthly: number;
+    growth: number;
+  };
+  expenses: {
+    maintenance: number;
+    equipment: number;
+    operational: number;
+    total: number;
+  };
+  profit: {
+    gross: number;
+    net: number;
+    margin: number;
+  };
+  efficiency: {
+    solar: number;
+    grid: number;
+    overall: number;
+  };
+}
 
 export default function AnalyticsPage() {
+  const [analyticsData, setAnalyticsData] = useState<AnalyticsData>({
+    energySold: { total: 0, daily: 0, monthly: 0, growth: 0 },
+    expenses: { maintenance: 0, equipment: 0, operational: 0, total: 0 },
+    profit: { gross: 0, net: 0, margin: 0 },
+    efficiency: { solar: 0, grid: 0, overall: 0 }
+  });
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Simulate API call
+    const mockData: AnalyticsData = {
+      energySold: {
+        total: 15420.5,
+        daily: 45.2,
+        monthly: 1356.8,
+        growth: 8.5
+      },
+      expenses: {
+        maintenance: 2500,
+        equipment: 8500,
+        operational: 1200,
+        total: 12200
+      },
+      profit: {
+        gross: 18500,
+        net: 6300,
+        margin: 34.1
+      },
+      efficiency: {
+        solar: 92.5,
+        grid: 88.3,
+        overall: 90.4
+      }
+    };
+
+    setTimeout(() => {
+      setAnalyticsData(mockData);
+      setLoading(false);
+    }, 1000);
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-100 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-green-600 mx-auto"></div>
+          <p className="mt-4 text-lg text-gray-600">Loading analytics data...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900">
-      {/* Header */}
-      <div className="relative z-10 container mx-auto px-6 py-12">
+    <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-100">
+      <div className="container mx-auto px-4 py-8">
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-center mb-8"
+        >
+          <h1 className="text-4xl font-bold text-gray-900 mb-4">
+            Smart Analytics Dashboard
+          </h1>
+          <p className="text-xl text-gray-600">
+            Comprehensive analysis of energy sales, expenses, and performance metrics
+          </p>
+        </motion.div>
+
+        {/* Key Metrics Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.1 }}
+            className="bg-white rounded-xl shadow-lg p-6 border-l-4 border-green-500"
+          >
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600">Energy Sold</p>
+                <p className="text-2xl font-bold text-gray-900">
+                  {analyticsData.energySold.total.toLocaleString()} kWh
+                </p>
+                <p className="text-sm text-green-600 flex items-center">
+                  <TrendingUpIcon className="h-4 w-4 mr-1" />
+                  +{analyticsData.energySold.growth}%
+                </p>
+              </div>
+              <BoltIcon className="h-8 w-8 text-green-500" />
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.2 }}
+            className="bg-white rounded-xl shadow-lg p-6 border-l-4 border-red-500"
+          >
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600">Total Expenses</p>
+                <p className="text-2xl font-bold text-gray-900">
+                  ₹{analyticsData.expenses.total.toLocaleString()}
+                </p>
+                <p className="text-sm text-gray-500">This month</p>
+              </div>
+              <WrenchScrewdriverIcon className="h-8 w-8 text-red-500" />
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.3 }}
+            className="bg-white rounded-xl shadow-lg p-6 border-l-4 border-blue-500"
+          >
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600">Net Profit</p>
+                <p className="text-2xl font-bold text-gray-900">
+                  ₹{analyticsData.profit.net.toLocaleString()}
+                </p>
+                <p className="text-sm text-blue-600">
+                  {analyticsData.profit.margin}% margin
+                </p>
+              </div>
+              <CurrencyRupeeIcon className="h-8 w-8 text-blue-500" />
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.4 }}
+            className="bg-white rounded-xl shadow-lg p-6 border-l-4 border-purple-500"
+          >
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600">Overall Efficiency</p>
+                <p className="text-2xl font-bold text-gray-900">
+                  {analyticsData.efficiency.overall}%
+                </p>
+                <p className="text-sm text-purple-600">System performance</p>
+              </div>
+              <ChartBarIcon className="h-8 w-8 text-purple-500" />
+            </div>
+          </motion.div>
+        </div>
+
+        {/* Detailed Analytics */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+          {/* Energy Sales Breakdown */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5 }}
+            className="bg-white rounded-xl shadow-lg p-6"
+          >
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">Energy Sales Breakdown</h2>
+            <div className="space-y-4">
+              <div className="flex justify-between items-center p-4 bg-green-50 rounded-lg">
+                <div>
+                  <p className="font-semibold text-gray-900">Daily Average</p>
+                  <p className="text-sm text-gray-600">Last 30 days</p>
+                </div>
+                <p className="text-xl font-bold text-green-600">
+                  {analyticsData.energySold.daily} kWh
+                </p>
+              </div>
+              <div className="flex justify-between items-center p-4 bg-blue-50 rounded-lg">
+                <div>
+                  <p className="font-semibold text-gray-900">Monthly Total</p>
+                  <p className="text-sm text-gray-600">Current month</p>
+                </div>
+                <p className="text-xl font-bold text-blue-600">
+                  {analyticsData.energySold.monthly} kWh
+                </p>
+              </div>
+              <div className="flex justify-between items-center p-4 bg-purple-50 rounded-lg">
+                <div>
+                  <p className="font-semibold text-gray-900">Growth Rate</p>
+                  <p className="text-sm text-gray-600">vs last month</p>
+                </div>
+                <p className="text-xl font-bold text-purple-600 flex items-center">
+                  <TrendingUpIcon className="h-5 w-5 mr-1" />
+                  +{analyticsData.energySold.growth}%
+                </p>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Expenses Breakdown */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6 }}
+            className="bg-white rounded-xl shadow-lg p-6"
+          >
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">Expenses Breakdown</h2>
+            <div className="space-y-4">
+              <div className="flex justify-between items-center p-4 bg-red-50 rounded-lg">
+                <div>
+                  <p className="font-semibold text-gray-900">Maintenance</p>
+                  <p className="text-sm text-gray-600">Regular upkeep</p>
+                </div>
+                <p className="text-xl font-bold text-red-600">
+                  ₹{analyticsData.expenses.maintenance.toLocaleString()}
+                </p>
+              </div>
+              <div className="flex justify-between items-center p-4 bg-orange-50 rounded-lg">
+                <div>
+                  <p className="font-semibold text-gray-900">Equipment</p>
+                  <p className="text-sm text-gray-600">New installations</p>
+                </div>
+                <p className="text-xl font-bold text-orange-600">
+                  ₹{analyticsData.expenses.equipment.toLocaleString()}
+                </p>
+              </div>
+              <div className="flex justify-between items-center p-4 bg-yellow-50 rounded-lg">
+                <div>
+                  <p className="font-semibold text-gray-900">Operational</p>
+                  <p className="text-sm text-gray-600">Daily operations</p>
+                </div>
+                <p className="text-xl font-bold text-yellow-600">
+                  ₹{analyticsData.expenses.operational.toLocaleString()}
+                </p>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+
+        {/* Efficiency Metrics */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="mb-12"
+          transition={{ delay: 0.7 }}
+          className="bg-white rounded-xl shadow-lg p-6"
         >
-          <Link href="/" className="inline-flex items-center text-white/70 hover:text-white transition-colors mb-8">
-            <ArrowLeftIcon className="w-5 h-5 mr-2" />
-            Back to Home
-          </Link>
-          
-          <div className="flex items-center space-x-4 mb-6">
-            <div className="w-16 h-16 rounded-2xl bg-gradient-to-r from-green-400 to-emerald-500 flex items-center justify-center">
-              <ChartBarIcon className="w-8 h-8 text-white" />
+          <h2 className="text-2xl font-bold text-gray-900 mb-6">System Efficiency Metrics</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="text-center p-6 bg-green-50 rounded-lg">
+              <div className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                <BoltIcon className="h-8 w-8 text-white" />
+              </div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Solar Efficiency</h3>
+              <p className="text-3xl font-bold text-green-600">{analyticsData.efficiency.solar}%</p>
+              <p className="text-sm text-gray-600 mt-2">Panel performance</p>
             </div>
-            <div>
-              <h1 className="text-5xl font-bold text-white">Smart Analytics</h1>
-              <p className="text-xl text-gray-300">Real-time energy insights and optimization</p>
+            <div className="text-center p-6 bg-blue-50 rounded-lg">
+              <div className="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                <ChartBarIcon className="h-8 w-8 text-white" />
+              </div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Grid Efficiency</h3>
+              <p className="text-3xl font-bold text-blue-600">{analyticsData.efficiency.grid}%</p>
+              <p className="text-sm text-gray-600 mt-2">Grid integration</p>
+            </div>
+            <div className="text-center p-6 bg-purple-50 rounded-lg">
+              <div className="w-16 h-16 bg-purple-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                <TrendingUpIcon className="h-8 w-8 text-white" />
+              </div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Overall Efficiency</h3>
+              <p className="text-3xl font-bold text-purple-600">{analyticsData.efficiency.overall}%</p>
+              <p className="text-sm text-gray-600 mt-2">System performance</p>
             </div>
           </div>
         </motion.div>
-
-        {/* Main Content */}
-        <div className="grid lg:grid-cols-2 gap-16">
-          {/* Left Column - Features */}
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="space-y-8"
-          >
-            <div className="space-y-6">
-              <h2 className="text-3xl font-bold text-white">Comprehensive Energy Intelligence</h2>
-              <p className="text-lg text-gray-300 leading-relaxed">
-                Our advanced analytics platform provides deep insights into your energy 
-                consumption and production patterns. Monitor performance in real-time, 
-                identify optimization opportunities, and make data-driven decisions 
-                to maximize your solar investment returns.
-              </p>
-            </div>
-
-            <div className="space-y-6">
-              {features.map((feature, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.3 + index * 0.1 }}
-                  className="p-6 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20"
-                >
-                  <div className="flex items-start space-x-4">
-                    <div className={`w-12 h-12 rounded-xl bg-gradient-to-r ${feature.color} flex items-center justify-center flex-shrink-0`}>
-                      {React.createElement(feature.icon, { className: "w-6 h-6 text-white" })}
-                    </div>
-                    <div>
-                      <h3 className="text-xl font-semibold text-white mb-2">{feature.title}</h3>
-                      <p className="text-gray-300">{feature.description}</p>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
-
-          {/* Right Column - Benefits & Demo */}
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className="space-y-8"
-          >
-            {/* Benefits List */}
-            <div className="p-8 rounded-3xl bg-white/10 backdrop-blur-md border border-white/20">
-              <h3 className="text-2xl font-bold text-white mb-6">Key Benefits</h3>
-              <div className="space-y-4">
-                {benefits.map((benefit, index) => (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.5, delay: 0.5 + index * 0.1 }}
-                    className="flex items-center space-x-3"
-                  >
-                    <CheckCircleIcon className="w-6 h-6 text-green-400 flex-shrink-0" />
-                    <span className="text-gray-300">{benefit}</span>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-
-            {/* Analytics Demo */}
-            <div className="p-8 rounded-3xl bg-white/10 backdrop-blur-md border border-white/20">
-              <h3 className="text-2xl font-bold text-white mb-6">Live Analytics Dashboard</h3>
-              <div className="space-y-6">
-                {/* Key Metrics */}
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="text-center p-4 rounded-xl bg-green-500/20">
-                    <div className="text-2xl font-bold text-green-400">85%</div>
-                    <div className="text-sm text-gray-300">Efficiency</div>
-                  </div>
-                  <div className="text-center p-4 rounded-xl bg-blue-500/20">
-                    <div className="text-2xl font-bold text-blue-400">$127</div>
-                    <div className="text-sm text-gray-300">Saved Today</div>
-                  </div>
-                </div>
-
-                {/* Energy Flow */}
-                <div className="space-y-3">
-                  <h4 className="text-lg font-semibold text-white">Energy Flow</h4>
-                  <div className="space-y-2">
-                    <div className="flex justify-between items-center">
-                      <span className="text-gray-300">Generated</span>
-                      <span className="text-green-400 font-semibold">8.5 kWh</span>
-                    </div>
-                    <div className="w-full bg-gray-700 rounded-full h-2">
-                      <div className="bg-gradient-to-r from-green-400 to-green-500 h-2 rounded-full" style={{ width: '85%' }}></div>
-                    </div>
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <div className="flex justify-between items-center">
-                      <span className="text-gray-300">Consumed</span>
-                      <span className="text-blue-400 font-semibold">6.2 kWh</span>
-                    </div>
-                    <div className="w-full bg-gray-700 rounded-full h-2">
-                      <div className="bg-gradient-to-r from-blue-400 to-blue-500 h-2 rounded-full" style={{ width: '62%' }}></div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Recent Activity */}
-                <div className="space-y-3">
-                  <h4 className="text-lg font-semibold text-white">Recent Activity</h4>
-                  {[
-                    { action: 'Peak generation reached', time: '2:30 PM', value: '8.5 kW' },
-                    { action: 'Energy sold to grid', time: '1:45 PM', value: '2.3 kWh' },
-                    { action: 'Efficiency optimization', time: '12:15 PM', value: '+5%' }
-                  ].map((activity, index) => (
-                    <div key={index} className="flex justify-between items-center p-3 rounded-lg bg-white/5">
-                      <div>
-                        <div className="text-white text-sm">{activity.action}</div>
-                        <div className="text-gray-400 text-xs flex items-center">
-                          <ClockIcon className="w-3 h-3 mr-1" />
-                          {activity.time}
-                        </div>
-                      </div>
-                      <div className="text-green-400 font-semibold text-sm">{activity.value}</div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {/* CTA Button */}
-            <Link href="/dashboard">
-              <button className="w-full px-8 py-4 bg-gradient-to-r from-green-400 to-emerald-500 text-white font-semibold rounded-2xl hover:from-green-500 hover:to-emerald-600 transition-all duration-300 transform hover:scale-105 shadow-xl">
-                View Analytics Dashboard
-              </button>
-            </Link>
-          </motion.div>
-        </div>
       </div>
     </div>
   );

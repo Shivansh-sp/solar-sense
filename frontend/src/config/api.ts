@@ -5,11 +5,11 @@ const API_CONFIG = {
     timeout: 10000,
   },
   production: {
-    baseURL: process.env.NEXT_PUBLIC_API_URL || 'https://solar-sense-backend.onrender.com',
+    baseURL: 'https://solar-sense-backend.onrender.com',
     timeout: 15000,
   },
   staging: {
-    baseURL: process.env.NEXT_PUBLIC_API_URL || 'https://solar-sense-backend.onrender.com',
+    baseURL: 'https://solar-sense-backend.onrender.com',
     timeout: 15000,
   }
 }
