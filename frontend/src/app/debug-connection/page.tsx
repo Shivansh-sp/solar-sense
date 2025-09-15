@@ -1,17 +1,17 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { API_BASE_URL } from '@/config/api'
 
 export default function DebugConnectionPage() {
-  const [results, setResults] = useState<Array<{test: string, status: string, data: any}>>([])
+  const [results, setResults] = useState<Array<{test: string, status: string, data: unknown}>>([])
   const [loading, setLoading] = useState(false)
 
-  const addResult = (test: string, status: string, data: any) => {
+  const addResult = (test: string, status: string, data: unknown) => {
     setResults(prev => [...prev, { test, status, data }])
   }
 
-  const runAllTests = async () => {
+  const runAllTests = useCallback(async () => {
     setLoading(true)
     setResults([])
 
@@ -63,11 +63,11 @@ export default function DebugConnectionPage() {
     }
 
     setLoading(false)
-  }
+  }, [])
 
   useEffect(() => {
     runAllTests()
-  }, [])
+  }, [runAllTests])
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">
