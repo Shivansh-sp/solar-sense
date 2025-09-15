@@ -8,7 +8,10 @@
     "dev": "cd backend && npm run dev",
     "build": "cd frontend && npm run build",
     "install:all": "npm install && cd backend && npm install && cd ../frontend && npm install",
-    "setup": "node setup-env.js dev"
+    "setup": "node setup-env.js dev",
+    "start:full": "node start.js",
+    "start:windows": "start.bat",
+    "start:powershell": "powershell -ExecutionPolicy Bypass -File start.ps1"
   },
   "keywords": [
     "solar",
