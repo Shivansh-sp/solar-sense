@@ -28,7 +28,7 @@ export async function GET(request: NextRequest) {
           householdId: payload.householdId
         }
       })
-    } catch (_jwtError) {
+    } catch {
       return NextResponse.json({
         success: false,
         message: 'Invalid or expired token'

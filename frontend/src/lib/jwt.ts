@@ -29,7 +29,7 @@ export const verifyJWT = (token: string): JWTPayload => {
     } as jwt.VerifyOptions) as JWTPayload
     
     return decoded
-  } catch (_error) {
+  } catch {
     throw new Error('Invalid or expired token')
   }
 }
@@ -38,7 +38,7 @@ export const decodeJWT = (token: string): JWTPayload | null => {
   try {
     const decoded = jwt.decode(token) as JWTPayload
     return decoded
-  } catch (_error) {
+  } catch {
     return null
   }
 }
