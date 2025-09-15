@@ -5,7 +5,7 @@ const API_CONFIG = {
     timeout: 10000,
   },
   production: {
-    baseURL: process.env.NEXT_PUBLIC_API_URL || 'https://solar-sense-backend.onrender.com/api',
+    baseURL: process.env.NEXT_PUBLIC_API_URL || '/api/mock-auth',
     timeout: 15000,
   },
   staging: {
