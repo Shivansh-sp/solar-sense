@@ -6,15 +6,11 @@ import { motion } from 'framer-motion'
 import { HomeIcon, ArrowLeftIcon, ChartBarIcon } from '@heroicons/react/24/outline'
 
 interface FeaturePageHeaderProps {
-  title: string
   breadcrumb: string
-  description?: string
 }
 
 export default function FeaturePageHeader({ 
-  title, 
-  breadcrumb, 
-  description 
+  breadcrumb
 }: FeaturePageHeaderProps) {
   return (
     <motion.div

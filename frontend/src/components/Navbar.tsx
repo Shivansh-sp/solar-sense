@@ -9,14 +9,17 @@ import {
   SunIcon, 
   UserIcon,
   ArrowRightOnRectangleIcon,
-  HomeIcon
+  HomeIcon,
+  ChartBarIcon
 } from '@heroicons/react/24/outline'
 import Link from 'next/link'
+import LoginModal from './LoginModal'
 
 export default function Navbar() {
   const { user, logout } = useAuth()
   const [isOpen, setIsOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const [showLoginModal, setShowLoginModal] = useState(false)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -32,6 +35,11 @@ export default function Navbar() {
     { name: 'Demo', href: '#demo' },
     { name: 'About', href: '#about' },
   ]
+
+  const handleLoginClick = () => {
+    setShowLoginModal(true)
+    setIsOpen(false)
+  }
 
   // User menu removed as it was unused
 
@@ -97,6 +105,13 @@ export default function Navbar() {
           <div className="hidden md:flex items-center space-x-4">
             {user ? (
               <div className="flex items-center space-x-4">
+                <Link
+                  href="/dashboard"
+                  className="flex items-center space-x-2 px-3 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors duration-200"
+                >
+                  <ChartBarIcon className="w-4 h-4" />
+                  <span>Dashboard</span>
+                </Link>
                 <div className="flex items-center space-x-2">
                   <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
                     <UserIcon className="w-5 h-5 text-green-600" />
@@ -120,6 +135,7 @@ export default function Navbar() {
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
+                  onClick={handleLoginClick}
                   className="btn-outline text-sm"
                 >
                   Login
@@ -127,6 +143,7 @@ export default function Navbar() {
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
+                  onClick={handleLoginClick}
                   className="btn-primary text-sm"
                 >
                   Get Started
@@ -195,6 +212,14 @@ export default function Navbar() {
               
               {user ? (
                 <div className="pt-4 border-t border-gray-200 space-y-4">
+                  <Link
+                    href="/dashboard"
+                    onClick={() => setIsOpen(false)}
+                    className="flex items-center space-x-2 px-3 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors duration-200"
+                  >
+                    <ChartBarIcon className="w-4 h-4" />
+                    <span>Dashboard</span>
+                  </Link>
                   <div className="flex items-center space-x-3">
                     <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
                       <UserIcon className="w-5 h-5 text-green-600" />
@@ -221,6 +246,7 @@ export default function Navbar() {
                   <motion.button
                     whileHover={{ x: 10 }}
                     whileTap={{ scale: 0.95 }}
+                    onClick={handleLoginClick}
                     className="w-full btn-outline text-sm"
                   >
                     Login
@@ -228,6 +254,7 @@ export default function Navbar() {
                   <motion.button
                     whileHover={{ x: 10 }}
                     whileTap={{ scale: 0.95 }}
+                    onClick={handleLoginClick}
                     className="w-full btn-primary text-sm"
                   >
                     Get Started
@@ -238,6 +265,12 @@ export default function Navbar() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Login Modal */}
+      <LoginModal
+        isOpen={showLoginModal}
+        onClose={() => setShowLoginModal(false)}
+      />
     </motion.nav>
   )
 }
