@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { 
   PlayIcon, 
@@ -52,6 +52,18 @@ export default function DemoVideo({ className = '' }: DemoVideoProps) {
     }
   };
 
+  // Handle fullscreen change events
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      setIsFullscreen(!!document.fullscreenElement);
+    };
+
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+    return () => {
+      document.removeEventListener('fullscreenchange', handleFullscreenChange);
+    };
+  }, []);
+
   const openModal = () => {
     setShowModal(true);
   };
@@ -84,7 +96,6 @@ export default function DemoVideo({ className = '' }: DemoVideoProps) {
             onPlay={() => setIsPlaying(true)}
             onPause={() => setIsPlaying(false)}
             onEnded={() => setIsPlaying(false)}
-            onFullscreenChange={() => setIsFullscreen(!isFullscreen)}
           >
             <source src="/demo-video.mp4" type="video/mp4" />
             Your browser does not support the video tag.
