@@ -46,13 +46,11 @@ router.post('/register', [
 
     // Generate JWT
     const payload = {
-      user: {
-        id: newUser._id,
-        email: newUser.email,
-        role: newUser.role,
-        name: newUser.name,
-        householdId: newUser.householdId
-      }
+      id: newUser._id,
+      email: newUser.email,
+      role: newUser.role,
+      name: newUser.name,
+      householdId: newUser.householdId
     };
 
     const token = jwt.sign(payload, process.env.JWT_SECRET, {
@@ -124,13 +122,11 @@ router.post('/login', [
 
     // Generate JWT
     const payload = {
-      user: {
-        id: user._id,
-        email: user.email,
-        role: user.role,
-        name: user.name,
-        householdId: user.householdId
-      }
+      id: user._id,
+      email: user.email,
+      role: user.role,
+      name: user.name,
+      householdId: user.householdId
     };
 
     const token = jwt.sign(payload, process.env.JWT_SECRET, {
@@ -204,13 +200,11 @@ router.post('/google', [
 
     // Generate JWT
     const payload = {
-      user: {
-        id: user._id,
-        email: user.email,
-        role: user.role,
-        name: user.name,
-        householdId: user.householdId
-      }
+      id: user._id,
+      email: user.email,
+      role: user.role,
+      name: user.name,
+      householdId: user.householdId
     };
 
     const token = jwt.sign(payload, process.env.JWT_SECRET, {

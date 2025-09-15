@@ -10,7 +10,7 @@ JWT_EXPIRE=7d
 
 
 API_VERSION=v1
-CORS_ORIGIN=http://localhost:3000
+CORS_ORIGIN=https://solar-sense-final.onrender.com,http://localhost:3000
 
 ML_MODEL_PATH=./models
 WEATHER_API_KEY=demo-weather-api-key
