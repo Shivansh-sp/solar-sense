@@ -82,6 +82,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const login = async (email: string, password: string) => {
     try {
+      console.log('Attempting login to:', `${API_BASE_URL}/api/auth/login`)
+      
       const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
         method: 'POST',
         headers: {
@@ -90,7 +92,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         body: JSON.stringify({ email, password }),
       })
 
+      console.log('Login response status:', response.status)
+
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`)
+      }
+
       const data = await response.json()
+      console.log('Login response data:', data)
 
       if (data.success) {
         localStorage.setItem('token', data.token)
@@ -99,12 +108,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         throw new Error(data.message || 'Login failed')
       }
     } catch (error) {
+      console.error('Login error:', error)
       throw error
     }
   }
 
   const signup = async (userData: SignUpData) => {
     try {
+      console.log('Attempting signup to:', `${API_BASE_URL}/api/auth/register`)
+      
       const response = await fetch(`${API_BASE_URL}/api/auth/register`, {
         method: 'POST',
         headers: {
@@ -118,7 +130,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         }),
       })
 
+      console.log('Signup response status:', response.status)
+
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`)
+      }
+
       const data = await response.json()
+      console.log('Signup response data:', data)
 
       if (data.success) {
         localStorage.setItem('token', data.token)
@@ -127,6 +146,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         throw new Error(data.message || 'Signup failed')
       }
     } catch (error) {
+      console.error('Signup error:', error)
       throw error
     }
   }
