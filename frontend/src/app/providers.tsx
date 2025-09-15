@@ -55,9 +55,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     // Check for stored auth token
     const token = localStorage.getItem('token')
     if (token) {
-      console.log('Found stored token, verifying with:', `${API_BASE_URL}/me`)
+      console.log('Found stored token, verifying with:', `${API_BASE_URL}/auth/me`)
       // Verify token with backend
-      fetch(`${API_BASE_URL}/me`, {
+      fetch(`${API_BASE_URL}/auth/me`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -91,10 +91,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const login = async (email: string, password: string) => {
     try {
       console.log('API_BASE_URL:', API_BASE_URL)
-      console.log('Attempting login to:', `${API_BASE_URL}/login`)
+      console.log('Attempting login to:', `${API_BASE_URL}/auth/login`)
       console.log('Login data:', { email, password })
       
-      const response = await fetch(`${API_BASE_URL}/login`, {
+      const response = await fetch(`${API_BASE_URL}/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -128,9 +128,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const signup = async (userData: SignUpData) => {
     try {
-      console.log('Attempting signup to:', `${API_BASE_URL}/register`)
+      console.log('Attempting signup to:', `${API_BASE_URL}/auth/register`)
       
-      const response = await fetch(`${API_BASE_URL}/register`, {
+      const response = await fetch(`${API_BASE_URL}/auth/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

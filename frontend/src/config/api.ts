@@ -1,15 +1,15 @@
 // API Configuration for different environments
 const API_CONFIG = {
   development: {
-    baseURL: process.env.NEXT_PUBLIC_API_URL || '/api/mock-auth',
+    baseURL: process.env.NEXT_PUBLIC_API_URL || 'https://solar-sense-backend.onrender.com/api',
     timeout: 10000,
   },
   production: {
-    baseURL: process.env.NEXT_PUBLIC_API_URL || '/api/mock-auth',
+    baseURL: process.env.NEXT_PUBLIC_API_URL || 'https://solar-sense-backend.onrender.com/api',
     timeout: 15000,
   },
   staging: {
-    baseURL: process.env.NEXT_PUBLIC_API_URL || '/api/mock-auth',
+    baseURL: process.env.NEXT_PUBLIC_API_URL || 'https://solar-sense-backend.onrender.com/api',
     timeout: 15000,
   }
 }
@@ -24,11 +24,11 @@ export const API_TIMEOUT = config.timeout
 export const API_ENDPOINTS = {
   // Authentication
   AUTH: {
-    LOGIN: '/login',
-    REGISTER: '/register',
-    LOGOUT: '/logout',
-    REFRESH: '/refresh',
-    PROFILE: '/me',
+    LOGIN: '/auth/login',
+    REGISTER: '/auth/register',
+    LOGOUT: '/auth/logout',
+    REFRESH: '/auth/refresh',
+    PROFILE: '/auth/me',
   },
   
   // Energy Management

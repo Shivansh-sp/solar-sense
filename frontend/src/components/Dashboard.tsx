@@ -94,13 +94,13 @@ export default function Dashboard() {
             </div>
 
             <div className="flex items-center space-x-4">
-              <button
-                onClick={logout}
+              <Link
+                href="/"
                 className="flex items-center space-x-2 px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors duration-200"
               >
                 <ArrowLeftIcon className="w-4 h-4" />
                 <span>View Landing Page</span>
-              </button>
+              </Link>
               
               <div className="flex items-center space-x-2">
                 <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
